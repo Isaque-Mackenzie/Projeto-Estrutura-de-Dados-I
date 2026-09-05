@@ -3,6 +3,11 @@
     //Instanciar o objeto menu, para poder chamar o metodo exibir (pois o o metodo exibir esta em outra classe, então precisa do objeto)
     //usar o metodo para exibir que esta no outro arquivo
 
-
+public class Main {
+    public static void main(String[] args) {
+        Menu menu = new Menu();
+        menu.exibir();
+    }
+}
 
     
