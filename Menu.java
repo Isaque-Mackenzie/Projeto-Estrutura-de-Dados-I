@@ -5,19 +5,7 @@ import java.util.Scanner;
     //condições para cada opção, ou seja, se apertar em solicitção, ele chama outro aqrquivo onde esta a solução, não esqueça de instanciar para uso dos metodos.
 public class Menu {
     public void exibir() {
-        System.out.println("Menu:/n1. Solicitação/n2. Opção 2/n3. Opção 3");      
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Escolha uma opção: ");
-        int opcao = scanner.nextInt();
-    }
-}
-
-
-
-import java.util.Scanner;
-
-public class Menu{
-    public static void main(String[] args) {
+        
         Scanner s = new Scanner(System.in);
         System.out.println(
             "1 - Cadastrar nova solicitação\n" +
@@ -31,6 +19,10 @@ public class Menu{
             "0 - Encerrar\n"
             
         );
-        
+        System.out.println("Escolha uma opção: ");
+        int opcao = s.nextInt();
+
     }
 }
+
+
