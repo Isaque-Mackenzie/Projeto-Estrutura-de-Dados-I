@@ -16,3 +16,27 @@
     • CANCELADA
 */
 
+public class Solicitacao {
+    public int codigo;
+    public String solicitante;
+    public String descricao;
+    public String categoria;
+    public int prioridade;
+    public String status;
+
+    public Solicitacao(int codigo, String solicitante, String descricao, String categoria, int prioridade, String status) {
+        this.codigo = codigo;
+        this.solicitante = solicitante;
+        this.descricao = descricao;
+        this.categoria = categoria;
+        this.prioridade = prioridade;
+        this.status = status;
+        System.out.printf("Solicitação\nCódigo: %d, Solicitante: %s, Descrição: %s, Categoria: %s, Prioridade: %d, Status: %s%n", codigo, solicitante, descricao, categoria, prioridade, status);
+    }
+}
+
+
+    
+
+
+
