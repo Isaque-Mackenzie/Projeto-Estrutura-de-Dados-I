@@ -1,16 +1,23 @@
 import java.util.Scanner;
-//class menu
-    //metodo exibir, para mostrar o menu, chamado anteriormente pelo main
-    //print com as opções de menu
-    //condições para cada opção, ou seja, se apertar em solicitção, ele chama outro aqrquivo onde esta a solução, não esqueça de instanciar para uso dos metodos.
-public class Menu {
+
+
+public class Menu {//inicio da classe Menu
+
+    //contador para controlar a quantidade de solicitações cadastradas
     int contador=0;
+
+    //instanciação da pilha de solicitações
     public Pilha<Solicitacao> pilhaDeNomes = new PilhaComArray<>();
 
-    public void exibir() {
-        
-        Scanner scanner = new Scanner(System.in);
-        System.out.println(
+    //instanciação do scanner para ler a entrada do usuário
+    Scanner scanner = new Scanner(System.in);
+    
+
+    //método exibir, para mostrar o menu, chamado anteriormente pelo main
+    public boolean exibir() {
+
+        //menu
+        System.out.println(//inicio menu
             "1 - Cadastrar nova solicitação\n" +
             "2 - Consultar próxima solicitação\n" +
             "3 - Atender próxima solicitação\n" +
@@ -21,19 +28,22 @@ public class Menu {
             "8 - Desfazer última operação\n" +
             "9 - TESTE\n" +
             "0 - Encerrar\n"
-            
-        );
+        );//fim menu
+
+        //solicita ao usuário que escolha uma opção do menu
         System.out.println("Escolha uma opção: ");
         int opcao = scanner.nextInt();
 
-
-        if (opcao ==1){
-            contador++;
+        //condicional para verificar a opção escolhida pelo usuário
+        if (opcao ==1){//inicio if 1
+            contador++; //soma o contador toda vz que apertamos para fazer uma nova solicitação, mesmo que desfeita ou manipulada, ela contará como uma.
 
             // Limpa o buffer do teclado
-            scanner.nextLine();
+            scanner.nextLine();  //igual o de c, não muda nada
+
             System.out.println("Cadastrar nova solicitação");
 
+            //prompets com as informações necessárias para criar uma nova solicitação
             System.out.println("Digite a descrição: ");
             String descricao = scanner.nextLine();
 
@@ -42,21 +52,30 @@ public class Menu {
 
             System.out.println("Digite a prioridade (número): ");
             int prioridade = scanner.nextInt();
-            scanner.nextLine();
+            scanner.nextLine(); //igual c, coloquei para limpar em sempre que o codigo pedia
 
             System.out.println("Digite o nome do solicitante: ");
             String nome = scanner.nextLine();
             
-
             System.out.println("Digite o status: ");
             String status = scanner.nextLine();
         
             
-
+            //instancia a solicitação com as informações fornecidas pelo usuário e adiciona à pilha
             Solicitacao  nova_solicitaçao = new Solicitacao(contador, nome, descricao, categoria, prioridade, status);
             pilhaDeNomes.push(nova_solicitaçao);
-        }
+        }//fim if 1
     
+
+
+
+        //condicional para verificar a opção escolhida pelo usuário
+        if (opcao==5){//inicio if 5
+            System.out.printf("Quantidade de solicitação: %d\n", contador);
+        }//fim if 5
+    
+
+
 
         if(opcao==9){
             Solicitacao joao = new Solicitacao(1, "João", "Problema no sistema", "TI", 1, "AGUARDANDO");
@@ -83,8 +102,14 @@ public class Menu {
             
 
         }
-        
 
+
+        if(opcao==0){//inicio if 0
+            System.out.println("Encerrando o programa...");
+            return true; // Sai do método exibir, encerrando o programa
+        }//fim if 0
+        
+        return false; // Continua o loop no método main
     }
 }
 
