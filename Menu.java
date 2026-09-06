@@ -3,8 +3,16 @@ import java.util.Scanner;
 
 public class Menu {//inicio da classe Menu
 
-    //contador para controlar a quantidade de solicitações cadastradas
+    //contador para controlar a quantidade de solicitações cadastradas, e numera a solicitação
     int contador=0;
+
+
+    // Declaração e instanciação da Fila e da Pilha, eu deixei a instancia da Fila em comentario, já que eu não tenho a fila ainda
+    /* 
+    public Fila<Solicitacao> filaDeSolicitacoes = new FilaComArray<>();
+    */
+    public Pilha<Operacao> pilhaDeOperacoes = new PilhaComArray<>();
+
 
     //instanciação da pilha de solicitações
     public Pilha<Solicitacao> pilhaDeNomes = new PilhaComArray<>();
@@ -29,6 +37,23 @@ public class Menu {//inicio da classe Menu
             "9 - TESTE\n" +
             "0 - Encerrar\n"
         );//fim menu
+
+
+
+
+        /*Operações mínimas
+        O programa deverá permitir:
+        1. cadastrar nova solicitação;                      corresponde ao 1 do menu
+        2. inserir a solicitação na Fila;                    
+        3. consultar a próxima solicitação;                 corresponde ao 3 do menu    
+        4. remover a próxima solicitação para atendimento;   
+        5. verificar se a Fila está vazia;                  
+        6. mostrar a quantidade de solicitações aguardando;     
+        7. exibir as solicitações presentes na Fila.         corresponde ao 4 do menu
+        */
+
+
+
 
         //solicita ao usuário que escolha uma opção do menu
         System.out.println("Escolha uma opção: ");
@@ -57,15 +82,23 @@ public class Menu {//inicio da classe Menu
             System.out.println("Digite o nome do solicitante: ");
             String nome = scanner.nextLine();
             
-            System.out.println("Digite o status: ");
-            String status = scanner.nextLine();
-        
+    
+
+            //instancia a solicitação com as informações fornecidas pelo usuário
+            Solicitacao  nova_solicitacao = new Solicitacao(contador, nome, descricao, categoria, prioridade,"AGUARDANDO");
             
-            //instancia a solicitação com as informações fornecidas pelo usuário e adiciona à pilha
-            Solicitacao  nova_solicitaçao = new Solicitacao(contador, nome, descricao, categoria, prioridade, status);
-            pilhaDeNomes.push(nova_solicitaçao);
+
+            // Adiciona na Fila, coloquei o codigo da adição da fila aqui
+
+            
+            // Registra a Operacao na Pilha, ESTA CADASTRO PORQUE VOCE ACABOU DE CADASTRAR UMA NOVA PESSOAS
+            Operacao operacao = new Operacao("CADASTRO", nova_solicitacao);
+            pilhaDeOperacoes.push(operacao);
+            
+
         }//fim if 1
     
+
 
 
 
@@ -75,13 +108,23 @@ public class Menu {//inicio da classe Menu
         }//fim if 5
     
 
+        if(opcao==7){
+             // Desempilhando e mostrando todos os nomes (pop)
+            System.out.println("\n--- DESEMPILHANDO OS NOMES ---");
+            while (!pilhaDeNomes.isEmpty()) {
+
+                Solicitacao solicitacao = pilhaDeNomes.pop();
+                System.out.println("Nome desempilhado: " + solicitacao.solicitante);
+            }
+        }
+
 
 
         if(opcao==9){
             Solicitacao joao = new Solicitacao(1, "João", "Problema no sistema", "TI", 1, "AGUARDANDO");
             Solicitacao maria = new Solicitacao(2, "Maria", "Problema com impressora", "TI", 2, "AGUARDANDO");
             Solicitacao pedro = new Solicitacao(3, "Pedro", "Problema com computador", "TI", 3, "AGUARDANDO");
-            
+            contador=3;
         
 
             // Usando o novo nome "Pilha" e "PilhaComArray"
@@ -92,15 +135,7 @@ public class Menu {//inicio da classe Menu
 
                
             System.out.println("Nome no topo: " + pilhaDeNomes.top().solicitante);
-
-            // Desempilhando e mostrando todos os nomes (pop)
-            System.out.println("\n--- DESEMPILHANDO OS NOMES ---");
-            while (!pilhaDeNomes.isEmpty()) {
-
-                Solicitacao solicitacao = pilhaDeNomes.pop();
-            }
             
-
         }
 
 
