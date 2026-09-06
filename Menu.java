@@ -15,7 +15,7 @@ public class Menu {//inicio da classe Menu
 
 
     //instanciação da pilha de solicitações
-    public Pilha<Solicitacao> pilhaDeNomes = new PilhaComArray<>();
+    public TADFila<Solicitacao> filaDeSolicitacoes = new Fila<>(5);
 
     //instanciação do scanner para ler a entrada do usuário
     Scanner scanner = new Scanner(System.in);
@@ -40,23 +40,8 @@ public class Menu {//inicio da classe Menu
 
 
 
-
-        /*Operações mínimas
-        O programa deverá permitir:
-        1. cadastrar nova solicitação;                      corresponde ao 1 do menu
-        2. inserir a solicitação na Fila;                    
-        3. consultar a próxima solicitação;                 corresponde ao 3 do menu    
-        4. remover a próxima solicitação para atendimento;   
-        5. verificar se a Fila está vazia;                  
-        6. mostrar a quantidade de solicitações aguardando;     
-        7. exibir as solicitações presentes na Fila.         corresponde ao 4 do menu
-        */
-
-
-
-
         //solicita ao usuário que escolha uma opção do menu
-        System.out.println("Escolha uma opção: ");
+        System.out.print("\nEscolha uma opção: ");
         int opcao = scanner.nextInt();
 
         //condicional para verificar a opção escolhida pelo usuário
@@ -66,20 +51,20 @@ public class Menu {//inicio da classe Menu
             // Limpa o buffer do teclado
             scanner.nextLine();  //igual o de c, não muda nada
 
-            System.out.println("Cadastrar nova solicitação");
+            System.out.println(" === Cadastrar nova solicitação ===");
 
             //prompets com as informações necessárias para criar uma nova solicitação
-            System.out.println("Digite a descrição: ");
+            System.out.print("Digite a descrição: ");
             String descricao = scanner.nextLine();
 
-            System.out.println("Digite a categoria: ");
+            System.out.print("Digite a categoria: ");
             String categoria = scanner.nextLine();
 
-            System.out.println("Digite a prioridade (número): ");
+            System.out.print("Digite a prioridade (número): ");
             int prioridade = scanner.nextInt();
             scanner.nextLine(); //igual c, coloquei para limpar em sempre que o codigo pedia
 
-            System.out.println("Digite o nome do solicitante: ");
+            System.out.print("Digite o nome do solicitante: ");
             String nome = scanner.nextLine();
             
     
@@ -89,7 +74,8 @@ public class Menu {//inicio da classe Menu
             
 
             // Adiciona na Fila, coloquei o codigo da adição da fila aqui
-
+            filaDeSolicitacoes.enqueue(nova_solicitacao);
+            System.out.println("Primeiro da fila: " + filaDeSolicitacoes.front().solicitante);
             
             // Registra a Operacao na Pilha, ESTA CADASTRO PORQUE VOCE ACABOU DE CADASTRAR UMA NOVA PESSOAS
             Operacao operacao = new Operacao("CADASTRO", nova_solicitacao);
@@ -111,12 +97,12 @@ public class Menu {//inicio da classe Menu
         if(opcao==7){
              // Desempilhando e mostrando todos os nomes (pop)
             System.out.println("\n--- DESEMPILHANDO OS NOMES ---");
-            while (!pilhaDeNomes.isEmpty()) {
-
-                Solicitacao solicitacao = pilhaDeNomes.pop();
-                System.out.println("Nome desempilhado: " + solicitacao.solicitante);
+            // while (!pilhaDeNomes.isEmpty()) {
+// 
+            //     Solicitacao solicitacao = pilhaDeNomes.pop();
+            //     System.out.println("Nome desempilhado: " + solicitacao.solicitante);
             }
-        }
+        //}
 
 
 
@@ -129,12 +115,12 @@ public class Menu {//inicio da classe Menu
 
             // Usando o novo nome "Pilha" e "PilhaComArray"
             
-            pilhaDeNomes.push(joao);
-            pilhaDeNomes.push(maria);
-            pilhaDeNomes.push(pedro);
+            //pilhaDeNomes.push(joao);
+            //pilhaDeNomes.push(maria);
+            //pilhaDeNomes.push(pedro);
 
                
-            System.out.println("Nome no topo: " + pilhaDeNomes.top().solicitante);
+            // System.out.println("Nome no topo: " + pilhaDeNomes.top().solicitante);
             
         }
 

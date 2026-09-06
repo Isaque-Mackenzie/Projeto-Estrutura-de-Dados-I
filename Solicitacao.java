@@ -31,7 +31,8 @@ public class Solicitacao {
         this.categoria = categoria;
         this.prioridade = prioridade;
         this.status = status;
-        System.out.printf("Solicitação\nCódigo: %d, Solicitante: %s, Descrição: %s, Categoria: %s, Prioridade: %d, Status: %s%n", codigo, solicitante, descricao, categoria, prioridade, status);
+        System.out.printf("\n === Solicitação: ===\nCódigo: %d, Solicitante: %s, Descrição: %s, Categoria: %s, Prioridade: %d, Status: %s\n", codigo, solicitante, descricao, categoria, prioridade, status);
+        System.out.printf("\n");
     }
 }
 
