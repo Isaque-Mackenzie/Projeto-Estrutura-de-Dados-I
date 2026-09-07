@@ -7,14 +7,9 @@ public class Menu {//inicio da classe Menu
     int contador=0;
 
 
-    // Declaração e instanciação da Fila e da Pilha, eu deixei a instancia da Fila em comentario, já que eu não tenho a fila ainda
-    /* 
-    public Fila<Solicitacao> filaDeSolicitacoes = new FilaComArray<>();
-    */
+    //instanciação da Pilha
     public Pilha<Operacao> pilhaDeOperacoes = new PilhaComArray<>();
-
-
-    //instanciação da pilha de solicitações
+    //instanciação da Fila
     public TADFila<Solicitacao> filaDeSolicitacoes = new Fila<>(5);
 
     //instanciação do scanner para ler a entrada do usuário
@@ -22,7 +17,7 @@ public class Menu {//inicio da classe Menu
     
 
     //método exibir, para mostrar o menu, chamado anteriormente pelo main
-    public boolean exibir() {
+    public boolean exibir() {//inicio exibir
 
         //menu
         System.out.println(//inicio menu
@@ -46,7 +41,7 @@ public class Menu {//inicio da classe Menu
 
         //condicional para verificar a opção escolhida pelo usuário
         if (opcao ==1){//inicio if 1
-            contador++; //soma o contador toda vz que apertamos para fazer uma nova solicitação, mesmo que desfeita ou manipulada, ela contará como uma.
+            contador++; //soma o contador toda vez que apertamos para fazer uma nova solicitação, mesmo que desfeita ou manipulada, ela contará como uma.
 
             // Limpa o buffer do teclado
             scanner.nextLine();  //igual o de c, não muda nada
@@ -69,17 +64,17 @@ public class Menu {//inicio da classe Menu
             
     
 
-            //instancia a solicitação com as informações fornecidas pelo usuário
+            //instancia a solicitação com as informações fornecidas pelo usuário, sempre vai como agurdando para a ista
             Solicitacao  nova_solicitacao = new Solicitacao(contador, nome, descricao, categoria, prioridade,"AGUARDANDO");
             
 
             // Adiciona na Fila, coloquei o codigo da adição da fila aqui
             filaDeSolicitacoes.enqueue(nova_solicitacao);
-            System.out.println("Primeiro da fila: " + filaDeSolicitacoes.front().solicitante);
+            System.out.println("Primeiro da fila: " + filaDeSolicitacoes.front().solicitante);//teste
             
             // Registra a Operacao na Pilha, ESTA CADASTRO PORQUE VOCE ACABOU DE CADASTRAR UMA NOVA PESSOAS
             Operacao operacao = new Operacao("CADASTRO", nova_solicitacao);
-            pilhaDeOperacoes.push(operacao);
+            pilhaDeOperacoes.push(operacao);//coloca na pilha
             
 
         }//fim if 1
@@ -94,19 +89,27 @@ public class Menu {//inicio da classe Menu
         }//fim if 5
     
 
-        if(opcao==7){
+        if(opcao==7){//inicio if 7
+
+            Pilha<Operacao> pilhaAuxiliar = new PilhaComArray<>();//pop perde o elemento quando tira
              // Desempilhando e mostrando todos os nomes (pop)
             System.out.println("\n--- DESEMPILHANDO OS NOMES ---");
-            // while (!pilhaDeNomes.isEmpty()) {
-// 
-            //     Solicitacao solicitacao = pilhaDeNomes.pop();
-            //     System.out.println("Nome desempilhado: " + solicitacao.solicitante);
+            while (!pilhaDeOperacoes.isEmpty()) {
+                Operacao operacao = pilhaDeOperacoes.pop();//pega o topo da pilha, lembra que pop tira e depois perde o elemento se não colocado em algum lugar
+                System.out.println("Solicitação: " + operacao.solicitacao.codigo + " " + operacao.tipo );
+                pilhaAuxiliar.push(operacao);
             }
-        //}
+
+            // Devolve os elementos para a pilha normal de antes, sem ser a auxiliar
+            while (!pilhaAuxiliar.isEmpty()) {
+                pilhaDeOperacoes.push(pilhaAuxiliar.pop());
+            }
+
+        }//fim if 7
 
 
 
-        if(opcao==9){
+        if(opcao==9){//inicio if 9
             Solicitacao joao = new Solicitacao(1, "João", "Problema no sistema", "TI", 1, "AGUARDANDO");
             Solicitacao maria = new Solicitacao(2, "Maria", "Problema com impressora", "TI", 2, "AGUARDANDO");
             Solicitacao pedro = new Solicitacao(3, "Pedro", "Problema com computador", "TI", 3, "AGUARDANDO");
@@ -119,34 +122,21 @@ public class Menu {//inicio da classe Menu
             //pilhaDeNomes.push(maria);
             //pilhaDeNomes.push(pedro);
 
-               
             // System.out.println("Nome no topo: " + pilhaDeNomes.top().solicitante);
             
-        }
+        }//fim if 9
 
 
         if(opcao==0){//inicio if 0
             System.out.println("Encerrando o programa...");
             return true; // Sai do método exibir, encerrando o programa
         }//fim if 0
+       
         
         return false; // Continua o loop no método main
-    }
-}
+    }//fim exibir
+}//fim menu
 
 
     
     
-
-
-/*
-while (resposta != 0) { // Compara com o inteiro 0
-    System.out.print("Digite o nome: ");
-    String nome = scanner.nextLine();
-    pilhaDeNomes.push(nome);
-
-    System.out.print("Quer digitar outro nome? (0/1): ");
-    resposta = scanner.nextInt(); // Pede a resposta novamente para atualizar a variável do loop
-    scanner.nextLine(); // Limpa o buffer do teclado
-}
-*/

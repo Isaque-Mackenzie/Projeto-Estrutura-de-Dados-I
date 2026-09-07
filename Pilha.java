@@ -9,7 +9,7 @@ public interface Pilha<E> {
 class PilhaComArray<E> implements Pilha<E> {
     private E[] elements;
     private int topIndex;
-    private static final int DEFAULT_CAPACITY = 10;
+    private static final int DEFAULT_CAPACITY = 100;
 
     @SuppressWarnings("unchecked")
     public PilhaComArray() {
