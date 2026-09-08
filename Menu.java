@@ -99,7 +99,7 @@ public class Menu {//inicio da classe Menu
             else{
                 filaDeSolicitacoes.exibir_fila();
             }
-        } // Inicio if 4
+        } // Fim if 4
 
         //condicional para verificar a opção escolhida pelo usuário
         if (opcao==5){//inicio if 5
