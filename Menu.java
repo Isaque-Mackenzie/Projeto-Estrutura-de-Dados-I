@@ -78,14 +78,32 @@ public class Menu {//inicio da classe Menu
             
 
         }//fim if 1
-    
+        
+        // Mostra próxima solicitação a ser atendida
+        if(opcao == 2){ // Inicio if 2
+            if(filaDeSolicitacoes.qIsEmpty()){
+                System.out.println("\nA fila está vazia!\n");
+            }
+            else{
+                System.out.println("\n === Próxima solicitação a ser atendida ===");
+                System.out.println(filaDeSolicitacoes.front());
 
+            }
+        } // Fim if 2
 
-
+        // Mostra a fila completa de solicitações
+        if (opcao == 4){ // Inicio if 4
+            if(filaDeSolicitacoes.qIsEmpty()){
+                System.out.println("A fila está vazia!");
+            }
+            else{
+                filaDeSolicitacoes.exibir_fila();
+            }
+        } // Inicio if 4
 
         //condicional para verificar a opção escolhida pelo usuário
         if (opcao==5){//inicio if 5
-            System.out.printf("Quantidade de solicitação: %d\n", contador);
+            System.out.printf("Quantidade de solicitações: %d\n", filaDeSolicitacoes.size());
         }//fim if 5
     
 
@@ -113,8 +131,12 @@ public class Menu {//inicio da classe Menu
             Solicitacao joao = new Solicitacao(1, "João", "Problema no sistema", "TI", 1, "AGUARDANDO");
             Solicitacao maria = new Solicitacao(2, "Maria", "Problema com impressora", "TI", 2, "AGUARDANDO");
             Solicitacao pedro = new Solicitacao(3, "Pedro", "Problema com computador", "TI", 3, "AGUARDANDO");
-            contador=3;
         
+            filaDeSolicitacoes.enqueue(joao);
+            filaDeSolicitacoes.enqueue(maria);
+            filaDeSolicitacoes.enqueue(pedro);
+
+            contador += 3;
 
             // Usando o novo nome "Pilha" e "PilhaComArray"
             

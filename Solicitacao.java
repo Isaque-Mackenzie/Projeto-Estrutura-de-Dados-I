@@ -31,14 +31,19 @@ public class Solicitacao {//inicio class solicitação
         this.categoria = categoria;
         this.prioridade = prioridade;
         this.status = status;
+        
         //imprimi a solicitação, como teste para saber que a solicitação foi criada, e que os dados foram passados corretamente, e que o construtor está funcionando
-        System.out.printf("\n === Solicitação: ===\nCódigo: %d, Solicitante: %s, Descrição: %s, Categoria: %s, Prioridade: %d, Status: %s\n", codigo, solicitante, descricao, categoria, prioridade, status);
+        System.out.printf("\n === Solicitação cadastrada: ===\nCódigo: %d, Solicitante: %s, Descrição: %s, Categoria: %s, Prioridade: %d, Status: %s\n", codigo, solicitante, descricao, categoria, prioridade, status);
         System.out.printf("\n");
     }//fim metodo solicitacao
+
+    @Override
+    public String toString() {
+        return "Código: " + this.codigo + 
+               " | Solicitante: " + this.solicitante + 
+               " | Descrição: " + this.descricao + 
+               " | Categoria: " + this.categoria + 
+               " | Prioridade: " + this.prioridade + 
+               " | Status: " + this.status;
+    }
 }//fim class solicitação
-
-
-    
-
-
-
