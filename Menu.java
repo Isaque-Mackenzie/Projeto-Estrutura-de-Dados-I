@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.util.concurrent.ExecutionException;
 
 
 public class Menu {//inicio da classe Menu
@@ -21,6 +22,7 @@ public class Menu {//inicio da classe Menu
 
         //menu
         System.out.println(//inicio menu
+            "\n=== Central de Atendimento e Gerenciamento de Solicitações ===\n\n" +
             "1 - Cadastrar nova solicitação\n" +
             "2 - Consultar próxima solicitação\n" +
             "3 - Atender próxima solicitação\n" +
@@ -93,12 +95,7 @@ public class Menu {//inicio da classe Menu
 
         // Mostra a fila completa de solicitações
         if (opcao == 4){ // Inicio if 4
-            if(filaDeSolicitacoes.qIsEmpty()){
-                System.out.println("A fila está vazia!");
-            }
-            else{
-                filaDeSolicitacoes.exibir_fila();
-            }
+            System.out.println(filaDeSolicitacoes);
         } // Fim if 4
 
         //condicional para verificar a opção escolhida pelo usuário
@@ -142,7 +139,7 @@ public class Menu {//inicio da classe Menu
             
             //pilhaDeNomes.push(joao);
             //pilhaDeNomes.push(maria);
-            //pilhaDeNomes.push(pedro);
+            // pilhaDeNomes.push(pedro);
 
             // System.out.println("Nome no topo: " + pilhaDeNomes.top().solicitante);
             
