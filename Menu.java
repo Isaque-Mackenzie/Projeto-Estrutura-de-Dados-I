@@ -112,6 +112,20 @@ public class Menu {//inicio da classe Menu
 
             case 3:{// ATENDE A PROXIMA SOLICITAÇÃO ################### FALTA IMPLEMENTAR
                 System.out.println("Opção 3 selecionada: Atender próxima solicitação");
+                if(filaDeSolicitacoes.qIsEmpty()){
+                    System.out.println("\nA fila está vazia!\n");
+                }
+                else{
+                    Solicitacao segura_solicitacao = filaDeSolicitacoes.dequeue();//dequeeu tira a solicitacao ultima e coloca no segura_solicitacao
+                    segura_solicitacao.status = "ATENDIDO"; // Atualiza o status da solicitação que esta sendo segurada
+    
+                    
+                    Operacao operacao = new Operacao("ATENDIMENTO", segura_solicitacao);// Empilha a operação de atendimento, aqui vamos criar uma operação que é a solicitação antiga, agora atualizada, jogar com o pop para a pilha
+                    pilhaDeOperacoes.push(operacao);
+    
+                    System.out.println("\nSolicitação atendida com sucesso!");
+                    System.out.println("Código: " + segura_solicitacao.codigo + " | Solicitante: " + segura_solicitacao.solicitante);
+                }
                 break;
             }
             
@@ -134,6 +148,11 @@ public class Menu {//inicio da classe Menu
 
             case 6:{ // CONSULTA A ÚLTIMA OPERAÇÃO REALIZADA ################ FALTA IMPLEMENTAR
                 System.out.println("Opção 6 selecionada: Consultar última operação realizada");
+                Operacao segura_operacao = pilhaDeOperacoes.top();
+                System.out.println("Ultima Operacao realizada");
+                System.out.println("Tipo: " + segura_operacao.tipo);
+                System.out.println("Solicitacao Codigo: " + segura_operacao.solicitacao.codigo);
+                System.out.println("Solicitante: " + segura_operacao.solicitacao.solicitante);
                 break;
             }
 
@@ -155,11 +174,27 @@ public class Menu {//inicio da classe Menu
                 break;
             }
 
-            case 8: // DESFAZ A ÚLTIMA OPERAÇÃO ############ FALTA IMPLEMENTAR
+            case 8:{ // DESFAZ A ÚLTIMA OPERAÇÃO ############ FALTA IMPLEMENTAR
                 System.out.println("Opção 8 selecionada: Desfazer última operação");
-                break;
+                // Remove a última operação realizada no topo da pilha, pega a ultima do topo da pilha e coloca no ultima operação
+                Operacao ultimaOperacao = pilhaDeOperacoes.pop();
 
-            case 9: // DADOS SINTÉTICOS
+                //ve oque tem nessa ultima operação
+                //se for um cadastro, desfaremos cadastro
+                if (ultimaOperacao.tipo=="CADASTRO"){//inicio if cadastro
+                    //tirar o ultimo elemnto da fila
+                }//fim if cadastro
+                
+
+                //se for um atendimento, desfaremos o status atendimento e colocamos aguardando
+                else if (ultimaOperacao.tipo=="ATENDIMENTO"){//inicio if atendimento
+                    ultimaOperacao.solicitacao.status="AGUARDANDO";
+                    filaDeSolicitacoes.enqueue(ultimaOperacao.solicitacao);//COLOCA NA FILA DE SOLICITACAO POR ULTIMO
+                }//fim if atendimento
+                break;
+            }
+
+            case 9:{ // DADOS SINTÉTICOS
                 System.out.println("Opção 9 selecionada: Dados Sintéticos");
                 Solicitacao joao = new Solicitacao(1, "João", "Problema no sistema", "TI", 1, "AGUARDANDO");
                 Solicitacao maria = new Solicitacao(2, "Maria", "Problema com impressora", "TI", 2, "AGUARDANDO");
@@ -169,23 +204,22 @@ public class Menu {//inicio da classe Menu
                 filaDeSolicitacoes.enqueue(maria);
                 filaDeSolicitacoes.enqueue(pedro);
 
+                pilhaDeOperacoes.push(new Operacao("CADASTRO", joao));
+                pilhaDeOperacoes.push(new Operacao("CADASTRO", maria));
+                pilhaDeOperacoes.push(new Operacao("CADASTRO", pedro));
+
                 contador += 3;
-
-                // Usando o novo nome "Pilha" e "PilhaComArray"
-                
-                //pilhaDeNomes.push(joao);
-                //pilhaDeNomes.push(maria);
-                //pilhaDeNomes.push(pedro);
-
-                // System.out.println("Nome no topo: " + pilhaDeNomes.top().solicitante);                
+               
                 break;
-
-            case 0:
+            }
+                
+            case 0:{
                 System.out.println("Encerrando o programa...");
                 return true; // Sai do método exibir, encerrando o programa
-
-            default:
+            }
+            default:{
                 System.out.println("ERRO! ESSA OPÇÃO NÃO EXISTE");
+            }
         }
         return false; // Continua o loop no método main
     }//fim exibir
