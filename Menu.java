@@ -160,7 +160,7 @@ public class Menu {//inicio da classe Menu
                 System.out.println("Opção 7 selecionada: Exibir histórico de operações");
                 Pilha<Operacao> pilhaAuxiliar = new PilhaComArray<>();//pop perde o elemento quando tira
                 // Desempilhando e mostrando todos os nomes (pop)
-                System.out.println("\n--- DESEMPILHANDO OS NOMES ---");
+                System.out.println("\n--- HISTÓRICOS DE OPERAÇÕES ---");
                 while (!pilhaDeOperacoes.isEmpty()) {
                     Operacao operacao = pilhaDeOperacoes.pop();//pega o topo da pilha, lembra que pop tira e depois perde o elemento se não colocado em algum lugar
                     System.out.println("Solicitação: " + operacao.solicitacao.codigo + " " + operacao.tipo );
