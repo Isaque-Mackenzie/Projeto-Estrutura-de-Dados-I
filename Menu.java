@@ -181,8 +181,26 @@ public class Menu {//inicio da classe Menu
 
                 //ve oque tem nessa ultima operação
                 //se for um cadastro, desfaremos cadastro
-                if (ultimaOperacao.tipo=="CADASTRO"){//inicio if cadastro
-                    //tirar o ultimo elemnto da fila
+            case 8:{ // DESFAZ A ÚLTIMA OPERAÇÃO ############ FALTA IMPLEMENTAR
+                System.out.println("Opção 8 selecionada: Desfazer última operação");
+                // Remove a última operação realizada no topo da pilha, pega a ultima do topo da pilha e coloca no ultima operação
+                Operacao ultimaOperacao = pilhaDeOperacoes.pop();
+
+                //ve oque tem nessa ultima operação
+                //se for um cadastro, desfaremos cadastro
+                if (ultimaOperacao.tipo.equals("CADASTRO")){//inicio if cadastro
+                    int qtdParaMover = filaDeSolicitacoes.size() - 1;
+                    TADFila<Solicitacao> filaAux = new Fila<>(5);
+                    for(int i = 0; i < qtdParaMover; i++){
+                        filaAux.enqueue(filaDeSolicitacoes.dequeue());
+                    }
+                    filaDeSolicitacoes.dequeue(); // remove o último elemento que ficou sozinho
+                    // enche a fila original de novo
+                    while(!filaAux.qIsEmpty()){
+                        filaDeSolicitacoes.enqueue(filaAux.dequeue());
+                    }
+
+
                 }//fim if cadastro
                 
 
