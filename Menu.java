@@ -8,10 +8,17 @@ public class Menu {//inicio da classe Menu
     //instanciação da Pilha
     public Pilha<Operacao> pilhaDeOperacoes = new PilhaComArray<>();
     //instanciação da Fila
-    public TADFila<Solicitacao> filaDeSolicitacoes = new Fila<>(5);
+    public TADFila<Solicitacao> filaDeSolicitacoes = new Fila<>(10);
 
     //instanciação do scanner para ler a entrada do usuário
     Scanner scanner = new Scanner(System.in);
+
+    Solicitacao joao = null;
+    Solicitacao maria = null;
+    Solicitacao pedro = null;
+    Solicitacao andre = null;
+    Solicitacao carlos = null;
+    Solicitacao ana = null;
 
     //método exibir, para mostrar o menu, chamado anteriormente pelo main
     public boolean exibir() {//inicio exibir
@@ -113,7 +120,7 @@ public class Menu {//inicio da classe Menu
             case 3:{// ATENDE A PROXIMA SOLICITAÇÃO ################### FALTA IMPLEMENTAR
                 System.out.println("Opção 3 selecionada: Atender próxima solicitação");
                 if(filaDeSolicitacoes.qIsEmpty()){
-                    System.out.println("\nA fila está vazia!\n");
+                    System.out.println("\nA fila está vazia! Não há solicitação para ser atendida\n");
                 }
                 else{
                     Solicitacao segura_solicitacao = filaDeSolicitacoes.dequeue();//dequeeu tira a solicitacao ultima e coloca no segura_solicitacao
@@ -174,62 +181,88 @@ public class Menu {//inicio da classe Menu
                 break;
             }
 
-            case 8:{ // DESFAZ A ÚLTIMA OPERAÇÃO ############ FALTA IMPLEMENTAR
-                System.out.println("Opção 8 selecionada: Desfazer última operação");
-                // Remove a última operação realizada no topo da pilha, pega a ultima do topo da pilha e coloca no ultima operação
-                Operacao ultimaOperacao = pilhaDeOperacoes.pop();
-
-                //ve oque tem nessa ultima operação
-                //se for um cadastro, desfaremos cadastro
-            case 8:{ // DESFAZ A ÚLTIMA OPERAÇÃO ############ FALTA IMPLEMENTAR
-                System.out.println("Opção 8 selecionada: Desfazer última operação");
-                // Remove a última operação realizada no topo da pilha, pega a ultima do topo da pilha e coloca no ultima operação
-                Operacao ultimaOperacao = pilhaDeOperacoes.pop();
-
-                //ve oque tem nessa ultima operação
-                //se for um cadastro, desfaremos cadastro
-                if (ultimaOperacao.tipo.equals("CADASTRO")){//inicio if cadastro
-                    int qtdParaMover = filaDeSolicitacoes.size() - 1;
-                    TADFila<Solicitacao> filaAux = new Fila<>(5);
-                    for(int i = 0; i < qtdParaMover; i++){
-                        filaAux.enqueue(filaDeSolicitacoes.dequeue());
-                    }
-                    filaDeSolicitacoes.dequeue(); // remove o último elemento que ficou sozinho
-                    // enche a fila original de novo
-                    while(!filaAux.qIsEmpty()){
-                        filaDeSolicitacoes.enqueue(filaAux.dequeue());
-                    }
-
-
-                }//fim if cadastro
+            case 8: { // DESFAZ A ÚLTIMA OPERAÇÃO - Inicio case 8
+                if (pilhaDeOperacoes.isEmpty()) {
+                    System.out.println("Não há nenhuma operação realizada para desfazer.");
+                } else {
+                    System.out.println("Opção 8 selecionada: Desfazer última operação");
                 
-
-                //se for um atendimento, desfaremos o status atendimento e colocamos aguardando
-                else if (ultimaOperacao.tipo=="ATENDIMENTO"){//inicio if atendimento
-                    ultimaOperacao.solicitacao.status="AGUARDANDO";
-                    filaDeSolicitacoes.enqueue(ultimaOperacao.solicitacao);//COLOCA NA FILA DE SOLICITACAO POR ULTIMO
-                }//fim if atendimento
-                break;
-            }
-
-            case 9:{ // DADOS SINTÉTICOS
-                System.out.println("Opção 9 selecionada: Dados Sintéticos");
-                Solicitacao joao = new Solicitacao(1, "João", "Problema no sistema", "TI", 1, "AGUARDANDO");
-                Solicitacao maria = new Solicitacao(2, "Maria", "Problema com impressora", "TI", 2, "AGUARDANDO");
-                Solicitacao pedro = new Solicitacao(3, "Pedro", "Problema com computador", "TI", 3, "AGUARDANDO");
+                    // Remove a última operação realizada no topo da pilha, pega a última
+                    Operacao ultimaOperacao = pilhaDeOperacoes.pop();
+                
+                    // vê o que tem nessa ultima operação
+                    // se for um cadastro, desfaremos cadastro
+                    if (ultimaOperacao.tipo.equals("CADASTRO")) { // inicio if cadastro
+                        int qtdParaMover = filaDeSolicitacoes.size() - 1;
+                        TADFila<Solicitacao> filaAux = new Fila<>(10);
+                    
+                        for (int i = 0; i < qtdParaMover; i++) {
+                            filaAux.enqueue(filaDeSolicitacoes.dequeue());
+                        }
+                    
+                        filaDeSolicitacoes.dequeue(); // remove o último elemento que fica
+                    
+                        // enche a fila original de novo
+                        while (!filaAux.qIsEmpty()) {
+                            filaDeSolicitacoes.enqueue(filaAux.dequeue());
+                        }
+                    
+                        System.out.println("Último cadastro desfeito com sucesso!");
+                    } // fim if cadastro
+                
+                    // se for um atendimento, desfaremos o status atendimento e colocamos a
+                    else if (ultimaOperacao.tipo.equals("ATENDIMENTO")) { // inicio if atendimento
+                        ultimaOperacao.solicitacao.status = "AGUARDANDO";
+                        filaDeSolicitacoes.enqueue(ultimaOperacao.solicitacao); // COLOCA N
+                    
+                        System.out.println("Atendimento desfeito! O cliente retornou à fila");
+                    } // fim if atendimento
+                }
             
-                filaDeSolicitacoes.enqueue(joao);
-                filaDeSolicitacoes.enqueue(maria);
-                filaDeSolicitacoes.enqueue(pedro);
-
-                pilhaDeOperacoes.push(new Operacao("CADASTRO", joao));
-                pilhaDeOperacoes.push(new Operacao("CADASTRO", maria));
-                pilhaDeOperacoes.push(new Operacao("CADASTRO", pedro));
-
-                contador += 3;
-               
                 break;
-            }
+            }// Fim case 8
+             
+                case 9:{ // DADOS SINTÉTICOS
+
+                    // Verifica se as solicitações de teste já estão na fila aguardando
+                    if (       joao != null && joao.status.equals("AGUARDANDO")
+                            || maria != null && maria.status.equals("AGUARDANDO")
+                            || pedro != null && pedro.status.equals("AGUARDANDO")
+                            || andre != null && andre.status.equals("AGUARDANDO")
+                            || carlos != null && carlos.status.equals("AGUARDANDO")
+                            || ana != null && ana.status.equals("AGUARDANDO")
+                        ) {
+                        
+                        System.out.println("Os dados sintéticos já foram inseridos e estão na fila!");
+                        System.out.println("Atenda ou remova as solicitações atuais antes de carregar novamente.");
+                        
+                        break; // Cancela a Opção 9 e volta pro menu
+                    }
+                    System.out.println("Opção 9 selecionada: Dados Sintéticos");
+                    joao = new Solicitacao(1, "João", "Problema no sistema", "TI", 1, "AGUARDANDO");
+                    maria = new Solicitacao(2, "Maria", "Problema com impressora", "TI", 2, "AGUARDANDO");
+                    pedro = new Solicitacao(3, "Pedro", "Problema com computador", "TI", 3, "AGUARDANDO");
+                    andre = new Solicitacao(4, "André", "Problema com celular", "TI", 4, "AGUARDANDO");
+                    carlos = new Solicitacao(5, "Carlos", "Problema com notebook", "TI", 5, "AGUARDANDO");
+                    ana = new Solicitacao(6, "Ana", "Problema com monitor", "TI", 6, "AGUARDANDO");
+
+                    filaDeSolicitacoes.enqueue(joao);
+                    filaDeSolicitacoes.enqueue(maria);
+                    filaDeSolicitacoes.enqueue(pedro);
+                    filaDeSolicitacoes.enqueue(andre);
+                    filaDeSolicitacoes.enqueue(carlos);
+                    filaDeSolicitacoes.enqueue(ana);
+
+                    pilhaDeOperacoes.push(new Operacao("CADASTRO", joao));
+                    pilhaDeOperacoes.push(new Operacao("CADASTRO", maria));
+                    pilhaDeOperacoes.push(new Operacao("CADASTRO", pedro));
+                    pilhaDeOperacoes.push(new Operacao("CADASTRO", andre));
+                    pilhaDeOperacoes.push(new Operacao("CADASTRO", carlos));
+                    pilhaDeOperacoes.push(new Operacao("CADASTRO", ana));
+                    contador += 6; // PRECISA MESMO DISSO AQUI?
+                    
+                    break;
+                }
                 
             case 0:{
                 System.out.println("Encerrando o programa...");
@@ -242,7 +275,3 @@ public class Menu {//inicio da classe Menu
         return false; // Continua o loop no método main
     }//fim exibir
 }//fim menu
-
-
-    
-    
