@@ -201,7 +201,9 @@ public class Menu {//inicio da classe Menu
                         }
                     
                         filaDeSolicitacoes.dequeue(); // remove o último elemento que fica
-                    
+                        // Altera o status para não ficar mais "AGUARDANDO"
+                        ultimaOperacao.solicitacao.status = "CANCELADA";
+                                            
                         // enche a fila original de novo
                         while (!filaAux.qIsEmpty()) {
                             filaDeSolicitacoes.enqueue(filaAux.dequeue());
