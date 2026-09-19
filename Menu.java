@@ -239,12 +239,12 @@ public class Menu {//inicio da classe Menu
                         break; // Cancela a Opção 9 e volta pro menu
                     }
                     System.out.println("Opção 9 selecionada: Dados Sintéticos");
-                    joao = new Solicitacao(1, "João", "Problema no sistema", "TI", 1, "AGUARDANDO");
-                    maria = new Solicitacao(2, "Maria", "Problema com impressora", "TI", 2, "AGUARDANDO");
-                    pedro = new Solicitacao(3, "Pedro", "Problema com computador", "TI", 3, "AGUARDANDO");
-                    andre = new Solicitacao(4, "André", "Problema com celular", "TI", 4, "AGUARDANDO");
-                    carlos = new Solicitacao(5, "Carlos", "Problema com notebook", "TI", 5, "AGUARDANDO");
-                    ana = new Solicitacao(6, "Ana", "Problema com monitor", "TI", 6, "AGUARDANDO");
+                    joao = new Solicitacao(contador+=1, "João", "Problema no sistema", "TI", 1, "AGUARDANDO");
+                    maria = new Solicitacao(contador+=1, "Maria", "Problema com impressora", "TI", 2, "AGUARDANDO");
+                    pedro = new Solicitacao(contador+=1, "Pedro", "Problema com computador", "TI", 3, "AGUARDANDO");
+                    andre = new Solicitacao(contador+=1, "André", "Problema com celular", "TI", 4, "AGUARDANDO");
+                    carlos = new Solicitacao(contador+=1, "Carlos", "Problema com notebook", "TI", 5, "AGUARDANDO");
+                    ana = new Solicitacao(contador+=1, "Ana", "Problema com monitor", "TI", 6, "AGUARDANDO");
 
                     filaDeSolicitacoes.enqueue(joao);
                     filaDeSolicitacoes.enqueue(maria);
@@ -259,7 +259,6 @@ public class Menu {//inicio da classe Menu
                     pilhaDeOperacoes.push(new Operacao("CADASTRO", andre));
                     pilhaDeOperacoes.push(new Operacao("CADASTRO", carlos));
                     pilhaDeOperacoes.push(new Operacao("CADASTRO", ana));
-                    contador += 6; // PRECISA MESMO DISSO AQUI?
                     
                     break;
                 }
