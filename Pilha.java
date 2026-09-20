@@ -1,10 +1,11 @@
 public interface Pilha<E> {
-    void push(E element);
-    E pop();
-    E top();
-    boolean isEmpty();
-    int size();
+    void push(E element);   //push (e) insere e no topo
+    E pop();                //pop () remove e retorna o topo
+    E top();                //top () consulta o topo sem remover
+    boolean isEmpty();      //isEmpty () verifica se esta vazia
+    int size();             //
 }
+
 
 class PilhaComArray<E> implements Pilha<E> {
     private E[] elements;
@@ -19,12 +20,18 @@ class PilhaComArray<E> implements Pilha<E> {
 
     @Override
     public void push(E element) {
+        if ( topIndex == elements . length - 1) {
+            throw new IllegalStateException (" Pilha cheia ") ;
+        }
         topIndex++;
         elements[topIndex] = element;
     }
 
     @Override
     public E pop() {
+        if ( isEmpty () ) {
+            throw new IllegalStateException (" Pilha vazia ") ;
+        }
         E element = elements[topIndex];
         elements[topIndex] = null;
         topIndex--;
@@ -33,6 +40,7 @@ class PilhaComArray<E> implements Pilha<E> {
 
     @Override
     public E top() {
+        if ( isEmpty () ) throw new IllegalStateException (" Pilha vazia ");
         return elements[topIndex];
     }
 
@@ -47,6 +55,9 @@ class PilhaComArray<E> implements Pilha<E> {
     }
 }
 
+    
+    
+    
     
     
     
