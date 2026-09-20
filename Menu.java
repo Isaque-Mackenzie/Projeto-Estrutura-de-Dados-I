@@ -117,7 +117,7 @@ public class Menu {//inicio da classe Menu
                 break;
             }
 
-            case 3:{// ATENDE A PROXIMA SOLICITAÇÃO ################### FALTA IMPLEMENTAR
+            case 3:{// ATENDE A PROXIMA SOLICITAÇÃO 
                 System.out.println("Opção 3 selecionada: Atender próxima solicitação");
                 if(filaDeSolicitacoes.qIsEmpty()){
                     System.out.println("\nA fila está vazia! Não há solicitação para ser atendida\n");
@@ -153,31 +153,41 @@ public class Menu {//inicio da classe Menu
                 break;
             }
 
-            case 6:{ // CONSULTA A ÚLTIMA OPERAÇÃO REALIZADA ################ FALTA IMPLEMENTAR
+            case 6:{ // CONSULTA A ÚLTIMA OPERAÇÃO REALIZADA 
                 System.out.println("Opção 6 selecionada: Consultar última operação realizada");
-                Operacao segura_operacao = pilhaDeOperacoes.top();
-                System.out.println("Ultima Operacao realizada");
-                System.out.println("Tipo: " + segura_operacao.tipo);
-                System.out.println("Solicitacao Codigo: " + segura_operacao.solicitacao.codigo);
-                System.out.println("Solicitante: " + segura_operacao.solicitacao.solicitante);
+                try {
+                    Operacao segura_operacao = pilhaDeOperacoes.top();
+                    System.out.println("Ultima Operacao realizada");
+                    System.out.println("Tipo: " + segura_operacao.tipo);
+                    System.out.println("Solicitacao Codigo: " + segura_operacao.solicitacao.codigo);
+                    System.out.println("Solicitante: " + segura_operacao.solicitacao.solicitante);
+                }
+                catch (ArrayIndexOutOfBoundsException e) {
+                    System.out.println("\nNão há operações registradas.\n");
+                }
                 break;
             }
 
             case 7:{ // EXIBE O HISTÓRICO DE OPERAÇÕES
                 System.out.println("Opção 7 selecionada: Exibir histórico de operações");
-                Pilha<Operacao> pilhaAuxiliar = new PilhaComArray<>();//pop perde o elemento quando tira
-                // Desempilhando e mostrando todos os nomes (pop)
-                System.out.println("\n--- HISTÓRICOS DE OPERAÇÕES ---");
-                while (!pilhaDeOperacoes.isEmpty()) {
-                    Operacao operacao = pilhaDeOperacoes.pop();//pega o topo da pilha, lembra que pop tira e depois perde o elemento se não colocado em algum lugar
-                    System.out.println("Solicitação: " + operacao.solicitacao.codigo + " " + operacao.tipo );
-                    pilhaAuxiliar.push(operacao);
+                if (pilhaDeOperacoes.isEmpty()) {
+                    System.out.println("Nenhuma operação realizada para exibir\n")
+                } 
+                else {
+                    Pilha<Operacao> pilhaAuxiliar = new PilhaComArray<>();//pop perde o elemento quando tira
+                    // Desempilhando e mostrando todos os nomes (pop)
+                    System.out.println("\n--- HISTÓRICOS DE OPERAÇÕES ---\n");
+                    while (!pilhaDeOperacoes.isEmpty()) {
+                        Operacao operacao = pilhaDeOperacoes.pop();//pega o topo da pilha, lembra que pop tira e depois perde o elemento se não colocado em algum lugar
+                        System.out.println("Solicitação: " + operacao.solicitacao.codigo + " " + operacao.tipo );
+                        pilhaAuxiliar.push(operacao);
+                    }
+                
+                    // Devolve os elementos para a pilha normal de antes, sem ser a auxiliar
+                    while (!pilhaAuxiliar.isEmpty()) {
+                        pilhaDeOperacoes.push(pilhaAuxiliar.pop());
+                    }
                 }
-            
-                // Devolve os elementos para a pilha normal de antes, sem ser a auxiliar
-                while (!pilhaAuxiliar.isEmpty()) {
-                    pilhaDeOperacoes.push(pilhaAuxiliar.pop());
-                }                
                 break;
             }
 
