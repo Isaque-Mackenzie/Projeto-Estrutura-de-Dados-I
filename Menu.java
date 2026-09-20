@@ -96,7 +96,7 @@ public class Menu {//inicio da classe Menu
 
                 // Adiciona na Fila, coloquei o codigo da adição da fila aqui
                 filaDeSolicitacoes.enqueue(nova_solicitacao);
-                System.out.println("Primeiro da fila: " + filaDeSolicitacoes.front().solicitante);//teste
+                System.out.println("Primeiro da fila: " + filaDeSolicitacoes.front().getSolicitante);//teste
                 
                 // Registra a Operacao na Pilha, ESTA CADASTRO PORQUE VOCE ACABOU DE CADASTRAR UMA NOVA PESSOAS
                 Operacao operacao = new Operacao("CADASTRO", nova_solicitacao);
@@ -159,7 +159,7 @@ public class Menu {//inicio da classe Menu
                     Operacao segura_operacao = pilhaDeOperacoes.top();
                     System.out.println("Ultima Operacao realizada");
                     System.out.println("Tipo: " + segura_operacao.tipo);
-                    System.out.println("Solicitacao Codigo: " + segura_operacao.solicitacao.codigo);
+                    System.out.println("Solicitacao Codigo: " + segura_operacao.solicitacao.getCodigo());
                     System.out.println("Solicitante: " + segura_operacao.solicitacao.solicitante);
                 }
                 catch (ArrayIndexOutOfBoundsException e) {
@@ -179,7 +179,7 @@ public class Menu {//inicio da classe Menu
                     System.out.println("\n--- HISTÓRICOS DE OPERAÇÕES ---\n");
                     while (!pilhaDeOperacoes.isEmpty()) {
                         Operacao operacao = pilhaDeOperacoes.pop();//pega o topo da pilha, lembra que pop tira e depois perde o elemento se não colocado em algum lugar
-                        System.out.println("Solicitação: " + operacao.solicitacao.codigo + " " + operacao.tipo );
+                        System.out.println("Solicitação: " + operacao.solicitacao.getCodigo() + " " + operacao.tipo );
                         pilhaAuxiliar.push(operacao);
                     }
                 
