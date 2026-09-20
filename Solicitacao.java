@@ -8,12 +8,9 @@
     • Data/hora de abertura 
     • Status 
     • Responsável pelo atendimentop 
-    
-    Possíveis estados: 
-    • AGUARDANDO 
-    • EM_ATENDIMENTO 
-    • CONCLUIDA 
-    • CANCELADA
+
+
+    Falta a Data/hora e responsavel pelo antendimento
 */
 
 public class Solicitacao {//inicio class solicitação
@@ -37,6 +34,59 @@ public class Solicitacao {//inicio class solicitação
         System.out.printf("\n");
     }//fim metodo solicitacao
 
+    // get e set
+
+    public int getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(int codigo) {
+        this.codigo = codigo;
+    }
+
+    public String getSolicitante() {
+        return solicitante;
+    }
+
+    public void setSolicitante(String solicitante) {
+        this.solicitante = solicitante;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
+    public String getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
+    }
+
+    public int getPrioridade() {
+        return prioridade;
+    }
+
+    public void setPrioridade(int prioridade) {
+        this.prioridade = prioridade;
+    }
+
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+
+    
     @Override
     public String toString() {
         return "Código: " + this.codigo + 
