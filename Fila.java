@@ -8,7 +8,6 @@ interface TADFila<T> {
     int size(); // Método pra ver qual o tamanho da fila
     boolean qIsEmpty(); // Método pra ver se a fila tá vazia
     boolean qIsFull(); // Método pra ver se a fila tá cheia
-    void exibir_fila(); // Método pra exibir todas as solicitações da fila
 }
 
 public class Fila<T> implements TADFila<T> {
@@ -73,13 +72,23 @@ public class Fila<T> implements TADFila<T> {
         return this.dados[this.fim];
     }
 
-    public void exibir_fila(){
+    @Override
+    public String toString() {
+        if (qIsEmpty()) {
+            return "A fila está vazia!";
+        }
+
+        String resultado = "=== FILA DE SOLICITAÇÕES ===\n";
         int atual_fila = this.inicio;
-        for(int i = 0; i < this.qtde; i++){
-            System.out.println(this.dados[atual_fila]);
+
+        for (int i = 0; i < this.qtde; i++) {
+            // Concatena o texto de cada solicitação na variável resultado
+            resultado += this.dados[atual_fila].toString() + "\n";
             atual_fila = (atual_fila + 1) % dados.length;
         }
         
+
+        return resultado; // Retorna o texto completo da fila
     }
 }
 
