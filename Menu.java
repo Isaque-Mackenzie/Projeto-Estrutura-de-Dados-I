@@ -171,7 +171,7 @@ public class Menu {//inicio da classe Menu
             case 7:{ // EXIBE O HISTÓRICO DE OPERAÇÕES
                 System.out.println("Opção 7 selecionada: Exibir histórico de operações");
                 if (pilhaDeOperacoes.isEmpty()) {
-                    System.out.println("Nenhuma operação realizada para exibir\n")
+                    System.out.println("Nenhuma operação realizada para exibir\n");
                 } 
                 else {
                     Pilha<Operacao> pilhaAuxiliar = new PilhaComArray<>();//pop perde o elemento quando tira
