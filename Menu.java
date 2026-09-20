@@ -155,16 +155,18 @@ public class Menu {//inicio da classe Menu
 
             case 6:{ // CONSULTA A ÚLTIMA OPERAÇÃO REALIZADA ################ FALTA IMPLEMENTAR
                 System.out.println("Opção 6 selecionada: Consultar última operação realizada");
-                try{
+                if(pilhaDeOperacoes.isEmpty()){
+                    System.out.println("\nNão há operações registradas!\n");
+                }
+
+                else{
                     Operacao segura_operacao = pilhaDeOperacoes.top();
                     System.out.println("Ultima Operacao realizada");
                     System.out.println("Tipo: " + segura_operacao.getTipo());
                     System.out.println("Solicitacao Codigo: " + segura_operacao.getSolicitacao().getCodigo());
                     System.out.println("Solicitante: " + segura_operacao.getSolicitacao().getSolicitante());
                 }
-                catch (ArrayIndexOutOfBoundsException e) {
-                    System.out.println("\nNão há operações registradas.\n");
-                }
+                
                 break;
             }
 
