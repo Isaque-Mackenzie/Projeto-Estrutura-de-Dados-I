@@ -123,7 +123,7 @@ public class Menu {//inicio da classe Menu
                     System.out.println("\nA fila está vazia! Não há solicitação para ser atendida\n");
                 }
                 else{
-                    Solicitacao segura_solicitacao = filaDeSolicitacoes.dequeue();//dequeeu tira a solicitacao ultima e coloca no segura_solicitacao
+                    Solicitacao segura_solicitacao = filaDeSolicitacoes.dequeue();//dequeue tira a solicitacao ultima e coloca no segura_solicitacao
                     segura_solicitacao.setStatus("ATENDIDO"); // Atualiza o status da solicitação que esta sendo segurada
     
                     
@@ -225,9 +225,23 @@ public class Menu {//inicio da classe Menu
                     // se for um atendimento, desfaremos o status atendimento e colocamos a
                     else if (ultimaOperacao.getTipo().equals("ATENDIMENTO")) { // inicio if atendimento
                         ultimaOperacao.getSolicitacao().setStatus("AGUARDANDO");
-                        filaDeSolicitacoes.enqueue(ultimaOperacao.getSolicitacao()); // COLOCA N
+                        
+                        // Criação da fila auxiliar para recolocação do objeto na fila na sua posição original
+                        TADFila<Solicitacao> filaRecolocacao = new Fila<>(10);
+
+                        // Remove o objeto atual da fila e coloca numa auxiliar
+                        filaRecolocacao.enqueue(ultimaOperacao.getSolicitacao());
+
+                        // Move todos os objetos da fila original e os coloca na fila auxiliar
+                        while(!filaDeSolicitacoes.qIsEmpty()){
+                            filaRecolocacao.enqueue(filaDeSolicitacoes.dequeue());
+                        }
+                        // Move todos os objetos da fila auxiliar para a original, com a solicitação do antendimento desfeito na posição original
+                        while(!filaRecolocacao.qIsEmpty()){
+                            filaDeSolicitacoes.enqueue(filaRecolocacao.dequeue());
+                        }                    
                     
-                        System.out.println("Atendimento desfeito! O cliente retornou à fila");
+                        System.out.println("Atendimento desfeito! O cliente retornou à fila na sua posição original");
                     } // fim if atendimento
                 }
             
