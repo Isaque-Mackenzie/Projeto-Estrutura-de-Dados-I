@@ -142,7 +142,7 @@ public class Menu {//inicio da classe Menu
                     System.out.println("A fila está vazia!");
                 }
                 else{
-                    filaDeSolicitacoes.exibir_fila();
+                    System.out.println(filaDeSolicitacoes);
                 }
                 break;
             }
