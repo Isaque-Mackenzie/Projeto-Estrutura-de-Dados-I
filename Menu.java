@@ -92,7 +92,7 @@ public class Menu {//inicio da classe Menu
                 String nome = scanner.nextLine();
 
                 //instancia a solicitação com as informações fornecidas pelo usuário, sempre vai como agurdando para a ista
-                Solicitacao nova_solicitacao = new Solicitacao(contador, nome, descricao, categoria, prioridade,"AGUARDANDO");
+                Solicitacao nova_solicitacao = new Solicitacao(contador, nome, descricao, categoria, prioridade,"AGUARDANDO", responsavel_atendimento);
 
                 // Adiciona na Fila, coloquei o codigo da adição da fila aqui
                 filaDeSolicitacoes.enqueue(nova_solicitacao);
@@ -267,13 +267,15 @@ public class Menu {//inicio da classe Menu
                     break; // Cancela a Opção 9 e volta pro menu
                 }
                 System.out.println("Opção 9 selecionada: Dados Sintéticos");
-                joao = new Solicitacao(contador+=1, "João", "Problema no sistema", "TI", 1, "AGUARDANDO");
-                maria = new Solicitacao(contador+=1, "Maria", "Problema com impressora", "TI", 2, "AGUARDANDO");
-                pedro = new Solicitacao(contador+=1, "Pedro", "Problema com computador", "TI", 3, "AGUARDANDO");
-                andre = new Solicitacao(contador+=1, "André", "Problema com celular", "TI", 4, "AGUARDANDO");
-                carlos = new Solicitacao(contador+=1, "Carlos", "Problema com notebook", "TI", 5, "AGUARDANDO");
-                ana = new Solicitacao(contador+=1, "Ana", "Problema com monitor", "TI", 6, "AGUARDANDO");
+                
+                joao = new Solicitacao(contador+=1, "João", "Problema no sistema", "TI", 1, "AGUARDANDO", "Vital Dias");
+                maria = new Solicitacao(contador+=1, "Maria", "Problema com impressora", "TI", 2, "AGUARDANDO", "Hebert Vianna");
+                pedro = new Solicitacao(contador+=1, "Pedro", "Problema com computador", "TI", 3, "AGUARDANDO", "Arnaldo Antunes");
+                andre = new Solicitacao(contador+=1, "André", "Problema com celular", "TI", 4, "AGUARDANDO", "Paulo Ricardo");
+                carlos = new Solicitacao(contador+=1, "Carlos", "Problema com notebook", "TI", 5, "AGUARDANDO", "Paula Toller");
+                ana = new Solicitacao(contador+=1, "Ana", "Problema com monitor", "TI", 6, "AGUARDANDO", "Bruno Gouveia");
 
+                
                 filaDeSolicitacoes.enqueue(joao);
                 filaDeSolicitacoes.enqueue(maria);
                 filaDeSolicitacoes.enqueue(pedro);
