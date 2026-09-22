@@ -98,19 +98,15 @@ public class Menu {//inicio da classe Menu
 
                 System.out.print("Digite o nome do responsavel pelo atendimento solicitante: ");
                 String responsavel_atendimento = scanner.nextLine();
-
-
                 
-
-                
-                //instancia a solicitação com as informações fornecidas pelo usuário, sempre vai como agurdando para a ista
+                //instancia a solicitação com as informações fornecidas pelo usuário
                 Solicitacao nova_solicitacao = new Solicitacao(contador, nome, descricao, categoria, prioridade, data_hora, "AGUARDANDO", responsavel_atendimento);
 
-                // Adiciona na Fila, coloquei o codigo da adição da fila aqui
+                // Adiciona na Fila
                 filaDeSolicitacoes.enqueue(nova_solicitacao);
                 System.out.println("Primeiro da fila: " + filaDeSolicitacoes.front().getSolicitante());//teste
                 
-                // Registra a Operacao na Pilha, ESTA CADASTRO PORQUE VOCE ACABOU DE CADASTRAR UMA NOVA PESSOAS
+                // Registra a Operacao na Pilha
                 Operacao operacao = new Operacao("CADASTRO", nova_solicitacao);
                 pilhaDeOperacoes.push(operacao);//coloca na pilha
 
@@ -129,7 +125,7 @@ public class Menu {//inicio da classe Menu
                 break;
             }
 
-            case 3:{// ATENDE A PROXIMA SOLICITAÇÃO ################### FALTA IMPLEMENTAR
+            case 3:{// Atende a próxima solicitação
                 System.out.println("Opção 3 selecionada: Atender próxima solicitação");
                 if(filaDeSolicitacoes.qIsEmpty()){
                     System.out.println("\nA fila está vazia! Não há solicitação para ser atendida\n");
@@ -137,7 +133,6 @@ public class Menu {//inicio da classe Menu
                 else{
                     Solicitacao segura_solicitacao = filaDeSolicitacoes.dequeue();//dequeue tira a solicitacao ultima e coloca no segura_solicitacao
                     segura_solicitacao.setStatus("ATENDIDO"); // Atualiza o status da solicitação que esta sendo segurada
-    
                     
                     Operacao operacao = new Operacao("ATENDIMENTO", segura_solicitacao);// Empilha a operação de atendimento, aqui vamos criar uma operação que é a solicitação antiga, agora atualizada, jogar com o pop para a pilha
                     pilhaDeOperacoes.push(operacao);
@@ -148,7 +143,7 @@ public class Menu {//inicio da classe Menu
                 break;
             }
             
-            case 4:{ // EXIBE A FILA DE SOLICITAÇÕES
+            case 4:{ // Exibe a fila de solicitações
                 System.out.println("Opção 4 selecionada: Exibir fila de solicitações");
                 if(filaDeSolicitacoes.qIsEmpty()){
                     System.out.println("A fila está vazia!");
@@ -159,13 +154,13 @@ public class Menu {//inicio da classe Menu
                 break;
             }
 
-            case 5:{ // EXIBE A QUANTIDADE DE SOLICITAÇÕES
+            case 5:{ // Exibe a quantidade de solicitações
                 System.out.println("Opção 5 selecionada: Exibir quantidade de solicitações");
                 System.out.printf("Quantidade de solicitações: %d\n", filaDeSolicitacoes.size());
                 break;
             }
 
-            case 6:{ // CONSULTA A ÚLTIMA OPERAÇÃO REALIZADA ################ FALTA IMPLEMENTAR
+            case 6:{ // Consulta a última operação realizada
                 System.out.println("Opção 6 selecionada: Consultar última operação realizada");
                 if(pilhaDeOperacoes.isEmpty()){
                     System.out.println("\nNão há operações registradas!\n");
@@ -182,13 +177,13 @@ public class Menu {//inicio da classe Menu
                 break;
             }
 
-            case 7:{ // EXIBE O HISTÓRICO DE OPERAÇÕES
+            case 7:{ // Exibe o histórico de operações
                 System.out.println("Opção 7 selecionada: Exibir histórico de operações");
                 if (pilhaDeOperacoes.isEmpty()) {
                     System.out.println("Nenhuma operação realizada para exibir\n");
                 } 
                 else{    
-                    Pilha<Operacao> pilhaAuxiliar = new PilhaComArray<>();//pop perde o elemento quando tira
+                    Pilha<Operacao> pilhaAuxiliar = new PilhaComArray<>();
                     // Desempilhando e mostrando todos os nomes (pop)
                     System.out.println("\n--- HISTÓRICOS DE OPERAÇÕES ---\n");
                     while (!pilhaDeOperacoes.isEmpty()) {
@@ -197,7 +192,7 @@ public class Menu {//inicio da classe Menu
                         pilhaAuxiliar.push(operacao);
                     }
                 
-                    // Devolve os elementos para a pilha normal de antes, sem ser a auxiliar
+                    // Devolve os elementos para a pilha normal de antes
                     while (!pilhaAuxiliar.isEmpty()) {
                         pilhaDeOperacoes.push(pilhaAuxiliar.pop());
                     }  
@@ -205,7 +200,7 @@ public class Menu {//inicio da classe Menu
                 break;
             }
 
-            case 8: { // DESFAZ A ÚLTIMA OPERAÇÃO - Inicio case 8
+            case 8: { // Desfaz a última operação - Inicio case 8
                 if (pilhaDeOperacoes.isEmpty()) {
                     System.out.println("Não há nenhuma operação realizada para desfazer.");
                 } else {
@@ -262,7 +257,7 @@ public class Menu {//inicio da classe Menu
                  break;
             }// Fim case 8
              
-            case 9:{ // DADOS SINTÉTICOS
+            case 9:{ // Dados sintéticos
 
                 // Verifica se as solicitações de teste já estão na fila aguardando
                 if (       joao != null && joao.getStatus().equals("AGUARDANDO")
@@ -288,7 +283,6 @@ public class Menu {//inicio da classe Menu
                 andre = new Solicitacao(contador+=1, "André", "Problema com celular", "TI", 4, data_hora,"AGUARDANDO","Paulo Ricardo");
                 carlos = new Solicitacao(contador+=1, "Carlos", "Problema com notebook", "TI", 5, data_hora,"AGUARDANDO","Paula Toller");
                 ana = new Solicitacao(contador+=1, "Ana", "Problema com monitor", "TI", 6, data_hora,"AGUARDANDO","Bruno Gouveia");
-
                 
                 filaDeSolicitacoes.enqueue(joao);
                 filaDeSolicitacoes.enqueue(maria);
@@ -303,7 +297,6 @@ public class Menu {//inicio da classe Menu
                 pilhaDeOperacoes.push(new Operacao("CADASTRO", andre));
                 pilhaDeOperacoes.push(new Operacao("CADASTRO", carlos));
                 pilhaDeOperacoes.push(new Operacao("CADASTRO", ana));
-                
                 
                 break;
             }
