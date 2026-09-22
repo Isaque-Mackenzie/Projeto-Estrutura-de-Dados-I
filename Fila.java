@@ -1,5 +1,4 @@
 
-// A interface lista os métodos que a classe de Fila precisa ter
 interface TADFila<T> {
     void enqueue(T elemento); // Método pra adicionar elemento no fim
     T dequeue(); // Método pra remover elemento do início
@@ -91,10 +90,3 @@ public class Fila<T> implements TADFila<T> {
         return resultado; // Retorna o texto completo da fila
     }
 }
-
-// Comportamento FIFO
-// enqueue(e): insere no final
-// dequeue(): remove e retorna o início
-// front(): consulta o início (sem remover)
-// isEmpty(): verifica se está vazia
-// size(): retorna a quantidade
