@@ -1,11 +1,10 @@
 public interface Pilha<E> {
-    void push(E element);   //push (e) insere e no topo
-    E pop();                //pop () remove e retorna o topo
-    E top();                //top () consulta o topo sem remover
-    boolean isEmpty();      //isEmpty () verifica se esta vazia
-    int size();             //
+    void push(E element);   // push (e) insere e no topo
+    E pop();                // pop () remove e retorna o topo
+    E top();                // top () consulta o topo sem remover
+    boolean isEmpty();      // isEmpty () verifica se esta vazia
+    int size();             // size () retorna a quantidade de elementos
 }
-
 
 class PilhaComArray<E> implements Pilha<E> {
     private E[] elements;
@@ -54,8 +53,6 @@ class PilhaComArray<E> implements Pilha<E> {
         return topIndex + 1;
     }
 }
-
-    
     
     
     
