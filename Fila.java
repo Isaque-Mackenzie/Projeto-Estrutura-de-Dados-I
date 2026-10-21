@@ -78,12 +78,12 @@ public class Fila<T> implements TADFila<T> {
         }
 
         String resultado = "=== FILA DE SOLICITAÇÕES ===\n";
-        int atual_fila = this.inicio;
+        int atualFila = this.inicio;
 
         for (int i = 0; i < this.qtde; i++) {
             // Concatena o texto de cada solicitação na variável resultado
-            resultado += this.dados[atual_fila].toString() + "\n";
-            atual_fila = (atual_fila + 1) % dados.length;
+            resultado += this.dados[atualFila].toString() + "\n";
+            atualFila = (atualFila + 1) % dados.length;
         }
         
 
