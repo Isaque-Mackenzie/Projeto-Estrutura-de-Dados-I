@@ -13,8 +13,6 @@ public class Menu {//inicio da classe Menu
     private TADFila<Solicitacao> filaDeSolicitacoes = new Fila<>(10);
 
 
-    LocalDateTime data_hora = LocalDateTime.now();// Ex: 2026-09-20T17:05:19.123
-
     //instanciação do scanner para ler a entrada do usuário
     Scanner scanner = new Scanner(System.in);
 
@@ -56,6 +54,7 @@ public class Menu {//inicio da classe Menu
 
         switch (opcao) {
             case 1:{ // CADASTRA A NOVA SOLICITAÇÃO
+                LocalDateTime dataHora = LocalDateTime.now();// Ex: 2026-09-20T17:05:19.123
                 System.out.println("Opção 1 selecionada: Cadastrar nova solicitação");
 
                 // CASO A FILA ESTIVER CHEIA, ENTÃO NEM PERGUNTA AS INFO PARA CADASTRAR, SO AVISA Q TA CHEIA E VOLTA PARA O MENU
@@ -102,7 +101,7 @@ public class Menu {//inicio da classe Menu
 
                 
                 //instancia a solicitação com as informações fornecidas pelo usuário, sempre vai como agurdando para a ista
-                Solicitacao novaSolicitacao = new Solicitacao(contador, nome, descricao, categoria, prioridade, data_hora, "AGUARDANDO", null);
+                Solicitacao novaSolicitacao = new Solicitacao(contador, nome, descricao, categoria, prioridade, dataHora, "AGUARDANDO", null);
 
                 // Adiciona na Fila, coloquei o codigo da adição da fila aqui
                 filaDeSolicitacoes.enqueue(novaSolicitacao);
@@ -283,14 +282,14 @@ public class Menu {//inicio da classe Menu
                 }
                 System.out.println("Opção 9 selecionada: Dados Sintéticos");
                 
-        
+                LocalDateTime dataHora = LocalDateTime.now();// Ex: 2026-09-20T17:05:19.123
 
-                joao = new Solicitacao(contador+=1, "João", "Problema no sistema", "TI", 1, data_hora, "AGUARDANDO","Vital Dias");
-                maria = new Solicitacao(contador+=1, "Maria", "Problema com impressora", "TI", 2, data_hora,"AGUARDANDO","Hebert Vianna");
-                pedro = new Solicitacao(contador+=1, "Pedro", "Problema com computador", "TI", 3, data_hora,"AGUARDANDO","Arnaldo Antunes");
-                andre = new Solicitacao(contador+=1, "André", "Problema com celular", "TI", 4, data_hora,"AGUARDANDO","Paulo Ricardo");
-                carlos = new Solicitacao(contador+=1, "Carlos", "Problema com notebook", "TI", 5, data_hora,"AGUARDANDO","Paula Toller");
-                ana = new Solicitacao(contador+=1, "Ana", "Problema com monitor", "TI", 6, data_hora,"AGUARDANDO","Bruno Gouveia");
+                joao = new Solicitacao(contador+=1, "João", "Problema no sistema", "TI", 1, dataHora, "AGUARDANDO",null);
+                maria = new Solicitacao(contador+=1, "Maria", "Problema com impressora", "TI", 2, dataHora,"AGUARDANDO",null);
+                pedro = new Solicitacao(contador+=1, "Pedro", "Problema com computador", "TI", 3, dataHora,"AGUARDANDO",null);
+                andre = new Solicitacao(contador+=1, "André", "Problema com celular", "TI", 4, dataHora,"AGUARDANDO",null);
+                carlos = new Solicitacao(contador+=1, "Carlos", "Problema com notebook", "TI", 5, dataHora,"AGUARDANDO",null);
+                ana = new Solicitacao(contador+=1, "Ana", "Problema com monitor", "TI", 6, dataHora,"AGUARDANDO",null);
 
                 
                 filaDeSolicitacoes.enqueue(joao);
