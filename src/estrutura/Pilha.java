@@ -1,5 +1,5 @@
 package estruturas;
-public interface Pilha<T> {
+interface PilhaNo<T> {
     //adicionei esse throws Exception na interface
     void push(T e) throws Exception;   // push (e) insere e no topo
     T pop() throws Exception;                // pop () remove e retorna o topo
@@ -12,12 +12,12 @@ public interface Pilha<T> {
 // Pilha Genérica, de qualquer tipo de dado não primitivo.
 // Autor1: Ivan Carlos Alcântara de Oliveira.
 // Data da Criação: 10/10/2026. 15h.
-class PilhaNo<T> implements Pilha<T> {
+public class Pilha<T>{
     private Node<T> topoPilha;
     private int quantidade;
 
     // Construtor 
-    public PilhaNo(int tamanho) {
+    public Pilha(int tamanho) {
         this.topoPilha = null;
         this.quantidade = 0;
     }
@@ -103,6 +103,7 @@ class PilhaNo<T> implements Pilha<T> {
         return sb.toString();
     }
 }
+
 
     
     
