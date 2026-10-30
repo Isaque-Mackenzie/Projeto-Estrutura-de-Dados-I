@@ -1,4 +1,4 @@
-
+package estruturas;
 interface TADFila<T> {
     void enqueue(T elemento); // Método pra adicionar elemento no fim
     T dequeue(); // Método pra remover elemento do início
@@ -8,85 +8,101 @@ interface TADFila<T> {
     boolean qIsEmpty(); // Método pra ver se a fila tá vazia
     boolean qIsFull(); // Método pra ver se a fila tá cheia
 }
-
-public class Fila<T> implements TADFila<T> {
-    private T[] dados;
-    private int inicio;
-    private int fim;
+// Classe Fila<T>: relativa a fila dinâmica e encadeada.
+// Implementada como uma lista encadeada com nós do tipo classe Node<T>
+// Fila Genérica, de qualquer tipo de dado não primitivo.
+// Autor1: Ivan Carlos Alcântara de Oliveira.
+// Data da Criação: 10/10/2026. 15h.
+public class Fila<T> {
+    private Node<T> inicio;
+    private Node<T> fim;
     private int qtde;
 
-    @SuppressWarnings("unchecked")
-    public Fila(int capacidade) {
-        this.dados = (T[]) new Object[capacidade];
-        this.inicio = 0;
-        this.fim = -1;
+    // Construtor 
+    public Fila( ) {
+        this.inicio = null;
+        this.fim = null;
         this.qtde = 0;
     }
 
+    // Verifica se a fila esta vazia.
     public boolean qIsEmpty() {
-        return this.qtde == 0;
+        return qtde == 0;
     }
 
-    public boolean qIsFull() {
-        return this.qtde == this.dados.length;
-    }
-    
-    public int size() {
-        return this.qtde;
-    }
-
-    public void enqueue(T elemento) {
-        if (qIsFull()) {
-            throw new IllegalStateException("Fila cheia! Não é possível enfileirar.");
-        }
-        this.fim = (this.fim + 1) % this.dados.length;
-        this.dados[this.fim] = elemento;
-        this.qtde++;
+    // Verifica se a lista está cheia.
+    // Como a lista utiliza alocação dinâmica de memória,
+    // não possui capacidade máxima predefinida.
+    // Caso não haja memória suficiente, 
+    // ocorre o erro em Java (OutOfMemoryError).
+    // @return false, pois a lista não possui limite fixo.
+    public boolean isFull() {
+       return false;
     }
 
-    public T dequeue() {
+    // Insere um elemento no final da fila.
+    public void enqueue(T e) throws Exception {
+        Node<T> novo = new Node<T>(e, null);
         if (qIsEmpty()) {
-            throw new IllegalStateException("Fila vazia! Não é possível desenfileirar.");
+            inicio = novo;
+        } else {
+            fim.setProx(novo);
         }
-        T elementoRemovido = this.dados[this.inicio];
-        this.dados[this.inicio] = null; 
-        
-        this.inicio = (this.inicio + 1) % this.dados.length;
-        this.qtde--;
-        
-        return elementoRemovido;
+        fim = novo;
+        qtde++;
     }
 
-    public T front() {
+    // Remove e retorna o elemento do inicio da fila.
+    public T dequeue() throws Exception {
         if (qIsEmpty()) {
-            throw new IllegalStateException("A fila está vazia!");
+            throw new Exception("underflow - Esvaziamento de Fila");
         }
-        return this.dados[this.inicio];
-    }
-
-    public T rear() {
+        T elemento = inicio.getDado();
+        inicio = inicio.getProx();
+        qtde--;
         if (qIsEmpty()) {
-            throw new IllegalStateException("A fila está vazia!");
+            fim = null;
         }
-        return this.dados[this.fim];
+        return elemento;
     }
 
+    // Retorna o primeiro elemento, sem remover.
+    public T front() throws Exception {
+        if (qIsEmpty()) {
+            throw new Exception("underflow - Esvaziamento de Fila");
+        }
+        return inicio.getDado();
+    }
+
+    // Retorna o ultimo elemento, sem remover.
+    public T rear() throws Exception {
+        if (qIsEmpty()) {
+            throw new Exception("underflow - Esvaziamento de Fila");
+        }
+        return fim.getDado();
+    }
+
+    // Retorna o total de elementos armazenados.
+    public int totalElementos() {
+        return qtde;
+    }
+
+    // Representacao textual do inicio para o fim.
     @Override
     public String toString() {
-        if (qIsEmpty()) {
-            return "A fila está vazia!";
+        StringBuilder sb = new StringBuilder();
+        sb.append("[Fila] quantidade: ").append(qtde);
+        if (!qIsEmpty()) {
+            sb.append(", primeiro: ").append(inicio.getDado())
+              .append(", último: ").append(fim.getDado());
         }
-
-        String resultado = "=== FILA DE SOLICITAÇÕES ===\n";
-        int atualFila = this.inicio;
-
-        for (int i = 0; i < this.qtde; i++) {
-            // Concatena o texto de cada solicitação na variável resultado
-            resultado += this.dados[atualFila].toString() + "\n";
-            atualFila = (atualFila + 1) % dados.length;
+        sb.append("\nConteudo da Fila': [ ");
+        Node<T> atual = inicio;
+        while (atual != null) {
+            sb.append("[").append(atual.getDado()).append("]");
+            atual = atual.getProx();
         }
-        
-
-        return resultado; // Retorna o texto completo da fila
+        sb.append(" ]");
+        return sb.toString();
     }
 }
