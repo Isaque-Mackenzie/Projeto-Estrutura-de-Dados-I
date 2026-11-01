@@ -1,4 +1,4 @@
-package estruturas;
+package estrutura;
 
 // Classe Node: relativa a um nó (node) da estrutura de dados  
 // Lista Ligada capaz de armazenar dados genéricos

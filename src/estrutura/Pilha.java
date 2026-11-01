@@ -1,23 +1,17 @@
-package estruturas;
-interface PilhaNo<T> {
-    //adicionei esse throws Exception na interface
-    void push(T e) throws Exception;   // push (e) insere e no topo
-    T pop() throws Exception;                // pop () remove e retorna o topo
-    T top() throws Exception;                // top () consulta o topo sem remover
-    boolean isEmpty() ;      // isEmpty () verifica se esta vazia
-    int sizeElements();             // size () retorna a quantidade de elementos
-}
+package estrutura;
+
+
 // Classe Pilha<T>: relativa a pilha dinâmica e encadeada.
 // Implementada como uma lista encadeada com nós do tipo classe Node<T>
 // Pilha Genérica, de qualquer tipo de dado não primitivo.
 // Autor1: Ivan Carlos Alcântara de Oliveira.
 // Data da Criação: 10/10/2026. 15h.
-public class Pilha<T>{
+public class Pilha<T> implements TADPilha<T>{
     private Node<T> topoPilha;
     private int quantidade;
 
     // Construtor 
-    public Pilha(int tamanho) {
+    public Pilha() {
         this.topoPilha = null;
         this.quantidade = 0;
     }

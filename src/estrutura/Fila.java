@@ -1,19 +1,14 @@
-package estruturas;
-interface TADFila<T> {
-    void enqueue(T elemento); // Método pra adicionar elemento no fim
-    T dequeue(); // Método pra remover elemento do início
-    T rear(); // Método pra ver qual é o elemento do fim
-    T front(); // Método pra ver qual é o elemento do inicio
-    int size(); // Método pra ver qual o tamanho da fila
-    boolean qIsEmpty(); // Método pra ver se a fila tá vazia
-    boolean qIsFull(); // Método pra ver se a fila tá cheia
-}
+package estrutura;
+
+import estrutura.TADFila;
+
+
 // Classe Fila<T>: relativa a fila dinâmica e encadeada.
 // Implementada como uma lista encadeada com nós do tipo classe Node<T>
 // Fila Genérica, de qualquer tipo de dado não primitivo.
 // Autor1: Ivan Carlos Alcântara de Oliveira.
 // Data da Criação: 10/10/2026. 15h.
-public class Fila<T> {
+public class Fila<T> implements TADFila<T> {
     private Node<T> inicio;
     private Node<T> fim;
     private int qtde;
@@ -36,7 +31,7 @@ public class Fila<T> {
     // Caso não haja memória suficiente, 
     // ocorre o erro em Java (OutOfMemoryError).
     // @return false, pois a lista não possui limite fixo.
-    public boolean isFull() {
+    public boolean qIsFull() {
        return false;
     }
 
@@ -83,7 +78,7 @@ public class Fila<T> {
     }
 
     // Retorna o total de elementos armazenados.
-    public int totalElementos() {
+    public int size() {
         return qtde;
     }
 

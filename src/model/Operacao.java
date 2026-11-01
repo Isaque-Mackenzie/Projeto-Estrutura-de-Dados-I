@@ -1,3 +1,5 @@
+package model;
+
 public class Operacao {
  private String tipo;
  private Solicitacao solicitacao;
