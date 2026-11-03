@@ -103,43 +103,8 @@ public class LinkedList<T> implements TADLinkedList<T> {
 	    }
 	    else return false; // não há espaço disponível em memória 
 	};
-	// insertHead(T id): insere o "id" passado como parâmetro no começo da 
-	// lista (funcionalidade idêntica ao addFirst).	
-	public boolean insertHead(T id){
-		Node<T> aux; // Ponteiro auxiliar para o novo nó a ser inserido
-	    if (!isFull()){ // se a lista não está cheia
-	      aux = new Node<T>(id, null);
-	      if (isEmpty()){ // Lista está vazia
-	        head = aux;
-	      }else { // Insere no começo e atualiza o ponteiro
-	      	aux.setProx(head);
-	      	head = aux;
-	      }
-    	  size++;
-	      return true; // inserção realizada com sucesso
-	    }
-	    else return false; // não há espaço disponível em memória  
-	};
-	// insertTail(T id): insere o "id" passado como parâmetro no final da 
-	// lista (funcionalidade idêntica ao addLast).		
-	public boolean insertTail(T id){
-		Node<T> aux; // Ponteiro auxiliar para o novo nó a ser inserido
-		Node<T> pAnda; // Ponteiro que anda na lista ligada	
-	    if (!isFull()){ // se a lista não está cheia
-	      aux = new Node<T>(id, null);
-	      if (isEmpty()){ // Lista está vazia
-	        head = aux;
-	      }else { // Insere no final e atualiza o ponteiro
-	        pAnda = head;  // Ponteiro que anda até o final da lista 
-	        while (pAnda.getProx() != null)
-	           pAnda = pAnda.getProx();
-	        pAnda.setProx( aux );
-	      }
-    	  size++;
-		  return true;  // inserção realizada com sucesso
-	    }
-	    else return false; // não há espaço disponível em memória  
-	};
+
+
 	// addLast(T id): adiciona o "id" passado como parâmetro no final da 
 	// lista (funcionalidade idêntica ao insertTail)
 	public boolean addLast(T id){
