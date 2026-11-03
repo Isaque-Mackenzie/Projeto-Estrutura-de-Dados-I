@@ -1,4 +1,4 @@
-package estrutura
+package estrutura;
   
 public interface MyLinkedList <T> {
     int size () ;
