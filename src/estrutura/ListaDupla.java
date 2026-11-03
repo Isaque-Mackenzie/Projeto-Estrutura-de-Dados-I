@@ -6,11 +6,13 @@ package estrutura;
 // Data da Criação: 10/10/2026. 15h.
 public class ListaDupla<T extends Comparable<T>> {
     private NoDuplo<T> head;
+    private NoDuplo<T> tail;
     private int size;
 
     // construtor da DLL
     public ListaDupla() {
         head = null;
+        tail = null;
         size = 0;
     }
 
@@ -39,38 +41,46 @@ public class ListaDupla<T extends Comparable<T>> {
         return head;
     }
 
-    // Mostra o conteúdo da lista em ordem crescente
-    public void showAscending() {
-        if (isEmpty()) {
-            System.out.print("Lista vazia!\n");
+
+
+    // Mostra o conteúdo da lista em ordem crescente - ISAQUE
+    public void showAscending(){
+        if(isEmpty()){
+            System.out.print("\nNão há histórico para ser exibido.\n");
             return;
         }
-        System.out.print("Lista: [ ");
-        NoDuplo<T> atual = head;
-        while (atual != null) {
-            System.out.print(atual.getData());
-            atual = atual.getRight();
-            if (atual != null) System.out.print(" ");
+
+        System.out.println("Histórico das solicitações em ordem crescente: [")
+        Node<T> atual = head; // Cria uma variável local auxiliar para percorrer a lista
+
+        while(atual.getNext() != null){
+            System.out.print(atual.getElement());
+            atual = atual.getNext();
+            System.out.print(" ");
         }
         System.out.print("]");
     }
 
-    // Mostra o conteúdo da lista em ordem decrescente
+
+    // Mostra o conteúdo da lista em ordem decrescente - ISAQUE
     public void showDescending() {
-        if (isEmpty()) {
-            System.out.print("Lista vazia!\n");
+        if(isEmpty()){
+            System.out.print("\nNão há histórico para ser exibido.\n");
             return;
         }
-        NoDuplo<T> atual = head;
-        while (atual.getRight() != null) atual = atual.getRight();
-        System.out.print("Lista: [ ");
-        while (atual != null) {
-            System.out.print(atual.getData());
-            atual = atual.getLeft();
-            if (atual != null) System.out.print(" ");
+
+        System.out.println("Histórico das solicitações em ordem decrescente: [");
+        Node<T> atual = tail; // Cria uma variável local auxiliar para percorrer a lista
+
+        while(atual.getPrev() != null){
+            System.out.print(atual.getElement());
+            atual = atual.getPrev();
+            System.out.print(" ");
         }
         System.out.print("]");
     }
+
+
 
     // Insere um dado (data) na lista em ordem crescente
     public boolean insertAscending(T data) {
