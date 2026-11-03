@@ -3,7 +3,7 @@ package estrutura;
 // lista ligada genérica.
 // Autor1: Ivan Carlos Alcântara de Oliveira.
 // Data da Criação: 10/10/2026. 15h.
-public class LinkedList<T> {
+public class LinkedList<T> implements TADLinkedList<T> {
 	private Node<T> head; // Ponteiro cabeça de lista
 	private int size; // Quantidade de elementos da lista ligada
 	// LinkedList(): construtor da Lista encadeada
