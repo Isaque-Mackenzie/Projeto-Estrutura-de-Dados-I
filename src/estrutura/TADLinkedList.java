@@ -1,6 +1,6 @@
 package estrutura;
   
-public interface MyLinkedList <T> {
+public interface TADLinkedList <T> {
     int size () ;
     boolean isEmpty () ;
     boolean addFirst ( T element ) ;
