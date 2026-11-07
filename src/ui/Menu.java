@@ -209,6 +209,52 @@ public class Menu{//inicio da classe Menu
                 break;
             }
 
+
+            case 11:{//Pesquisar solicitação por Codigo
+                System.out.println("Opção 11 selecionada: Pesquisar Solicitação por codigo");
+
+                //se a lista tiver vazia ENTÃO
+                    //tratamento de erro
+                if(centralAtendimento.listaSimplesVazia()){
+                    System.out.println("\nNão há nada na Lista!\n");
+                    break;
+                }
+
+
+                //se não tiver o fluxo segue
+              
+                System.out.println("Digite o codigo da solicitação: ");
+                scanner.nextLine();
+                int codigoDaBusca;
+
+                //leitura do codigoDa busca
+                codigoDaBusca = Integer.parseInt(scanner.nextLine().trim());
+
+                //se codiDa Busca <= 0 então da valor invalido
+                //se codigoDaBusca > que o size da lista, da valor invalido
+                //se digitar letra, da valor invalido
+
+                /* 
+                se validado, então vamos até a lista de solicitaçaõ, 
+                para isso vou usar a centralAtendimento, e la na central teremos uma
+                função para buscar pelo codigo, envia por parametro o codigo da busca.
+
+                achei é um bom nome? provavelmente não, rever isso
+                */
+                Solicitacao achei = centralAtendimento.buscaCodigo(codigoDaBusca);
+
+                //na volta se não achou, mensagem de erro
+                //se achou, um print
+                System.out.println("\nSolicitaçao");
+
+                //sera que esse print imprime a solicitação? vou tentar o mais facil
+                System.out.println(achei);
+
+                break;
+
+            } 
+                
+
             case 0:{
                 System.out.println("Encerrando o programa...");
                 return true; // Sai do método exibir, encerrando o programa
