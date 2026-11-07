@@ -1,14 +1,17 @@
-
 package service;
 
 import java.time.LocalDateTime;
 
+import estrutura.LinkedList;
 import estrutura.TADFila;
 import estrutura.Fila;
-
 import estrutura.Pilha;
+import estrutura.Node;
+
 import model.Operacao;
 import model.Solicitacao;
+
+
 
 public class CentralDeAtendimento {//inicio da classe CentralDeAtendimento
 
@@ -19,6 +22,9 @@ public class CentralDeAtendimento {//inicio da classe CentralDeAtendimento
     private Pilha<Operacao> pilhaDeOperacoes = new Pilha<>();
     //instanciação da Fila
     private Fila<Solicitacao> filaDeSolicitacoes = new Fila<>();
+     //instancia da LstaSimples
+    private LinkedList<Solicitacao> listaDeSolicitacoes = new LinkedList<>(); 
+
 
     Solicitacao joao = null;
     Solicitacao maria = null;
@@ -51,7 +57,13 @@ public class CentralDeAtendimento {//inicio da classe CentralDeAtendimento
 
         // Registra a Operacao na Pilha, ESTA CADASTRO PORQUE VOCE ACABOU DE CADASTRAR UMA NOVA PESSOAS
         Operacao operacao = new Operacao("CADASTRO", novaSolicitacao);
+        
+        //Adiciona na Pilha
         pilhaDeOperacoes.push(operacao);//coloca na pilha
+
+
+        //Adiciona na Lista
+        listaDeSolicitacoes.addLast(novaSolicitacao);
 
         return novaSolicitacao;
     }
@@ -227,7 +239,37 @@ public class CentralDeAtendimento {//inicio da classe CentralDeAtendimento
         pilhaDeOperacoes.push(new Operacao("CADASTRO", carlos));
         pilhaDeOperacoes.push(new Operacao("CADASTRO", ana));
 
+
+        listaDeSolicitacoes.addLast(joao);
+        listaDeSolicitacoes.addLast(maria);
+        listaDeSolicitacoes.addLast(pedro);
+        listaDeSolicitacoes.addLast(andre);
+        listaDeSolicitacoes.addLast(carlos);
+        listaDeSolicitacoes.addLast(ana);
+
+
         return true;
+    }
+
+    
+    //11 
+    public boolean listaSimplesVazia() throws Exception{
+        return listaDeSolicitacoes.isEmpty();
+    }
+
+    //11 Pesquisa por codigo
+    public Solicitacao buscaCodigo (int codigoDaBusca) throws Exception{
+        Node<Solicitacao> atual=listaDeSolicitacoes.getHead();
+        
+        while(atual!=null){
+            //pegar o Dado do nó atual, e o dado vai ser uma solicitação, e pega o codigo dessa solicitação
+            if (atual.getDado().getCodigo()==codigoDaBusca){
+                return atual.getDado();
+            }
+            atual=atual.getProx();
+        }
+        return null;
+
     }
 
 }//fim CentralDeAtendimento
