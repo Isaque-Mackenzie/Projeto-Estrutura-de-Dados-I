@@ -32,6 +32,11 @@ public class Menu{//inicio da classe Menu
             "7 - Exibir histórico de operações\n" +
             "8 - Desfazer última operação\n" +
             "9 - Inserir Dados Sintéticos\n" +
+            "10 - Exibir todas as solicitações" +
+            "11 - Pesquisar solicitação por código" +
+            "12 - Remover solicitação " +
+            "13 - Exibir solicitações por status" +
+            "14 - Exibir solicitações por categoria" +
             "0 - Encerrar a operação\n"
         );//fim menu
 
