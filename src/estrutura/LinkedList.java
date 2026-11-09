@@ -62,7 +62,7 @@ public class LinkedList<T> implements TADLinkedList<T> {
 	    	  head = aux;
 	    	  // Caso a posição a iserir seja a última ou superior, insere no final
 	      } else if (pos >= size+1) {
-	    		insertTail(id);
+	    		addLast(id);
 	      } else {// a posição a inserir é no meio da lista
 	    	// Procura a posição de inserção
 	    	int cont = 1;
