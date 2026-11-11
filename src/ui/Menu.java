@@ -210,6 +210,21 @@ public class Menu{//inicio da classe Menu
             }
 
 
+            case 10:{ // EXIBE TODAS AS SOLICITAÇÕES (percorre a lista simples)
+                System.out.println("Opção 10 selecionada: Exibir todas as solicitações");
+ 
+                if(centralAtendimento.listaSimplesVazia()){//se a lista de solicitação tiver vazia
+                    System.out.println("\nNão há nenhuma solicitação cadastrada!\n");
+                }
+                else{
+                    System.out.println("\nCADASTRO GERAL DE SOLICITAÇÕES\n");//se tiver alguma coisa na ista de solicitação
+                    System.out.print(centralAtendimento.listar());
+                }
+                break;
+            }
+ 
+
+
             case 11:{//Pesquisar solicitação por Codigo
                 System.out.println("Opção 11 selecionada: Pesquisar Solicitação por codigo");
 
@@ -253,6 +268,58 @@ public class Menu{//inicio da classe Menu
                 break;
 
             } 
+
+
+            case 13:{
+                if(centralAtendimento.listaSimplesVazia()){
+                    System.out.println("\nNão há nada na Lista!\n");
+                    break;
+                }
+
+                else{
+                    System.out.println("Digite o codigo da solicitação: ");
+                    scanner.nextLine();
+                    String statusDaBusca;
+
+                    statusDaBusca = scanner.nextLine().trim();
+
+                    if (!statusDaBusca.equalsIgnoreCase("AGUARDANDO") && !statusDaBusca.equalsIgnoreCase("EM_ATENDIMENTO") && !statusDaBusca.equalsIgnoreCase("CONCLUIDA") && !statusDaBusca.equalsIgnoreCase("CANCELADA")) {
+                        System.out.println("\nStatus inválido!\n");
+                        break;
+                    }
+                    System.out.println("\nSOLICITAÇÕES POR STATUS\n");//se tiver alguma coisa na ista de solicitação
+                    String achei = centralAtendimento.buscaStatus(statusDaBusca);  
+                    System.out.println(achei);
+                }  
+                break; 
+            }
+
+
+
+            case 14:{ // EXIBE SOLICITAÇÕES POR CATEGORIA
+                if(centralAtendimento.listaSimplesVazia()){
+                    System.out.println("\nNão há nada na Lista!\n");
+                    break;
+                }
+
+                else{
+                    System.out.print("Digite a categoria: ");
+                    scanner.nextLine();
+                    String categoriaDaBusca;
+
+                    categoriaDaBusca = scanner.nextLine().trim();
+
+                    // categoria O USUARIO QUE DIGITA, então não sendo null vale tudo (ler novamento do documento para saber se o professor não colocou nem um criterio)
+                    if (categoriaDaBusca.isEmpty()) {
+                        System.out.println("\nCategoria inválida!\n");
+                        break;
+                    }
+                    System.out.println("\nSOLICITAÇÕES POR CATEGORIA\n");
+                    String achei = centralAtendimento.buscaCategoria(categoriaDaBusca);
+                    System.out.println(achei);
+                }
+                break;
+            }
                 
 
             case 0:{
