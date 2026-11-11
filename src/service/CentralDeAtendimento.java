@@ -252,11 +252,19 @@ public class CentralDeAtendimento {//inicio da classe CentralDeAtendimento
     }
 
     
-    //11 
+    //Usado na 10 e na 11 
     public boolean listaSimplesVazia() throws Exception{
         return listaDeSolicitacoes.isEmpty();
     }
 
+
+    //10 EXIBIR TODAS AS SOLICITAÇÕES
+    public String listar() throws Exception {
+        return listaDeSolicitacoes.toString();
+    }
+
+
+    
     //11 Pesquisa por codigo
     public Solicitacao buscaCodigo (int codigoDaBusca) throws Exception{
         Node<Solicitacao> atual=listaDeSolicitacoes.getHead();
@@ -270,6 +278,55 @@ public class CentralDeAtendimento {//inicio da classe CentralDeAtendimento
         }
         return null;
 
+    }
+
+
+    
+
+    
+    
+    //13 Pesquisa por codigo
+    public String buscaStatus (String statusDaBusca) throws Exception{
+        String mensagemErro = "Não há uma solicitação com esse STATUS.";
+        String resultado = "";   // começa vazio
+        Node<Solicitacao> atual=listaDeSolicitacoes.getHead();
+        
+        while(atual!=null){
+            //pegar o Dado do nó atual, e o dado vai ser uma solicitação, e pega o codigo dessa solicitação
+            if (atual.getDado().getStatus().equalsIgnoreCase(statusDaBusca)){
+                // achou: guarda no texto (o + chama o toString() da Solicitacao)
+                resultado = resultado + atual.getDado() + "\n";
+            }
+            atual=atual.getProx();
+        }
+
+        if(resultado.isEmpty()){
+            return mensagemErro;
+        }
+        return resultado;
+    }
+
+
+
+    //14 Pesquisa por categoria
+    public String buscaCategoria (String categoriaDaBusca) throws Exception{
+        String mensagemErro = "Não há uma solicitação com essa CATEGORIA.";
+        String resultado = "";   // começa vazio
+        Node<Solicitacao> atual=listaDeSolicitacoes.getHead();
+
+        while(atual!=null){
+            // pega o Dado do nó atual (uma solicitação) e olha a categoria dela
+            if (atual.getDado().getCategoria().equalsIgnoreCase(categoriaDaBusca)){
+                // achou: guarda no texto (o + chama o toString() da Solicitacao)
+                resultado = resultado + atual.getDado() + "\n";
+            }
+            atual=atual.getProx();
+        }
+
+        if(resultado.isEmpty()){
+            return mensagemErro;
+        }
+        return resultado;
     }
 
 }//fim CentralDeAtendimento
