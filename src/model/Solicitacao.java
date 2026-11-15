@@ -107,7 +107,7 @@ public class Solicitacao {//inicio class solicitação
                "\nPrioridade: " + this.prioridade + 
                "\nData/hora " + this.dataHora +
                "\nStatus: " + this.status +
-               "\nResponsvel pelo Atendimento: " + this.responsavelAtendimento + "\n";
+               "\nResponsavel pelo Atendimento: " + this.responsavelAtendimento + "\n";
     }
 }//fim class solicitação
 
