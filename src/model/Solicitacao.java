@@ -23,7 +23,7 @@ public class Solicitacao {//inicio class solicitação
         this.responsavelAtendimento=responsavelAtendimento; 
         
         //imprimi a solicitação, como teste para saber que a solicitação foi criada, e que os dados foram passados corretamente, e que o construtor está funcionando
-        //TIRAR DAQUI, ISSO ESTA DESCONTANDO PONTO
+        //TODO (remover) TIRAR DAQUI, ISSO ESTA DESCONTANDO PONTO
         System.out.printf("\n === Solicitação cadastrada: ===\nCódigo: %d, Solicitante: %s, Descrição: %s, Categoria: %s, Prioridade: %d, Data: %s Status: %s, Responsavel pelo Atendimento: %s\n", codigo, solicitante, descricao, categoria, prioridade, dataHora, status, responsavelAtendimento);
         System.out.printf("\n");
     }//fim metodo solicitacao
