@@ -38,6 +38,10 @@ public class Menu{//inicio da classe Menu
             "13 - Exibir solicitações por status\n" +
             "14 - Exibir solicitações por categoria\n" +
             "15 - Concluir atendimento\n" +
+
+            "16 - Exibir hitorico de atendimento (primeiro ao ultimo)\n"+
+            "17 - Exibir hitorico de atendimento (ultimo ao primeiro)\n"+
+            
             "0 - Encerrar a operação\n"
         );//fim menu
 
@@ -358,6 +362,45 @@ public class Menu{//inicio da classe Menu
                 System.out.println("\n" + centralAtendimento.concluirAtendimento(codigoConcluir));
                 break;
             }
+
+
+
+
+            case 16:{
+                System.out.println("Opção 16 selecionada: Exibir Historico de Atendimento (primeiro ao ultimo)\"");
+
+                if (centralAtendimento.listaDuplaVazia()) {
+                    System.out.println("\nNão há nenhuma solicitação no Historico.\n");
+                    break;
+                }
+                
+                System.out.println("\nHistorico de Atendimento (Do Primeiro O Ultimo)\n");
+                centralAtendimento.atendimentoPU();//ATENDIMENTO PRIMEIRO AO ULTIMO
+                System.out.println(); 
+                 break;
+
+
+            }
+
+
+            case 17:{
+                System.out.println("Opção 17 selecionada: Exibir Historico de Atendimento (ultimo ao primeiro)");
+
+                if (centralAtendimento.listaDuplaVazia()) {
+                    System.out.println("\nNão há nenhuma solicitação no Historico.\n");
+                    break;
+                }
+                
+                System.out.println("\nHistorico de Atendimento (Do ultimo ao Primeiro)\n");
+                centralAtendimento.atendimentoUP();//ATENDIMENTO ULTIMO AO PRIMEIRO
+                System.out.println(); 
+                break;
+
+
+            }
+
+
+
 
             case 0:{
                 System.out.println("Encerrando o programa...");
