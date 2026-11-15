@@ -3,6 +3,7 @@ package service;
 import java.time.LocalDateTime;
 import estrutura.LinkedList;
 import estrutura.TADFila;
+import estrutura.ListaDupla;
 import estrutura.Fila;
 import estrutura.Pilha;
 import estrutura.Node;
@@ -21,9 +22,17 @@ public class CentralDeAtendimento {//inicio da classe CentralDeAtendimento
      
     //fila de solicitacoes PRIORIDADE 1 ALTA
     private LinkedList<Solicitacao> listaDeSolicitacoes = new LinkedList<>(); 
+
+//
+    //lista duplamente encadeada: histórico dos atendimentos CONCLUÍDOS (ordenada pela hora da conclusão)
+    private ListaDupla<Solicitacao> historicoAtendimentos = new ListaDupla<>();  
+//
     
+
     //fila de solicitacoes PRIORIDADE 2 BAIXA
     private Fila<Solicitacao> filaDeSolicitacoesP2 = new Fila<>();
+
+
 
     // rodizio 3 de prioridade alta para 1 de prioridade baixa 3:1 (evita a prioridade 2 esperar para sempre)
     public static final int LIMITE_ALTA_CONSECUTIVA = 3;
@@ -138,6 +147,10 @@ public class CentralDeAtendimento {//inicio da classe CentralDeAtendimento
 
     public boolean listaSimplesVazia() throws Exception{
         return listaDeSolicitacoes.isEmpty();
+    }
+
+    public boolean listaDuplaVazia() throws Exception{
+        return historicoAtendimentos.isEmpty();   
     }
 
 
@@ -298,6 +311,9 @@ public class CentralDeAtendimento {//inicio da classe CentralDeAtendimento
         if (ultimaOperacao.getTipo().equals("CONCLUSAO")) {
             ultimaOperacao.getSolicitacao().setStatus("EM_ATENDIMENTO");
             // TODO (integrante da Lista Dupla): remover esta solicitação do histórico de atendimentos concluídos aqui
+//
+            historicoAtendimentos.remove(ultimaOperacao.getSolicitacao());
+//
             return "Conclusão desfeita! A solicitação voltou para EM_ATENDIMENTO";
         }
 
@@ -477,7 +493,23 @@ public class CentralDeAtendimento {//inicio da classe CentralDeAtendimento
         pilhaDeOperacoes.push(new Operacao("CONCLUSAO", s));
 
         // TODO (integrante da Lista Dupla): inserir esta solicitação no histórico de atendimentos concluídos aqui
+        historicoAtendimentos.insertAscending(s);
+
 
         return "Atendimento da solicitação " + codigo + " concluído com sucesso!";
     }
+
+
+    //========================== CASE 15 = HISTORICO DE ATENDIMENTO ULTIMO AO PRIMEIRO===================
+
+    public void atendimentoPU() {
+        historicoAtendimentos.showAscending();    // case 15
+    }
+
+    //========================== CASE 16 = HISTORICO DE ATENDIMENTO ULTIMO AO PRIMEIRO===================
+    public void atendimentoUP() {
+        historicoAtendimentos.showDescending();   // case 16
+    }
+
+
 }//fim CentralDeAtendimento
