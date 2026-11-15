@@ -1,6 +1,5 @@
 package estrutura;
 
-import estrutura.TADFila;
 
 
 // Classe Fila<T>: relativa a fila dinâmica e encadeada.

@@ -37,6 +37,7 @@ public class Menu{//inicio da classe Menu
             "12 - Remover solicitação\n" +
             "13 - Exibir solicitações por status\n" +
             "14 - Exibir solicitações por categoria\n" +
+            "15 - Concluir atendimento\n" +
             "0 - Encerrar a operação\n"
         );//fim menu
 
@@ -73,6 +74,8 @@ public class Menu{//inicio da classe Menu
                 System.out.print("Digite a categoria: ");
                 String categoria = scanner.nextLine();
 
+                System.out.println("Prioridades: 1 = Alta | 2 = Baixa");
+
                 // Solicita a prioridade - COM TRATAMENTO DE ERRO PARA ENTRADA INVÁLIDA (se errar, pede pra digitar novamente)
                 int prioridade = -1;
                 boolean prioridadeValida = false;
@@ -81,6 +84,11 @@ public class Menu{//inicio da classe Menu
                     try {
                         prioridade = scanner.nextInt();
                         prioridadeValida = true;
+                        // PRIORIDADE (NOVO): só aceita 1 ou 2
+                        if (prioridade != 1 && prioridade != 2) {
+                            System.out.println("ERRO! A PRIORIDADE DEVE SER 1 (ALTA) OU 2 (BAIXA)");
+                            prioridadeValida = false;
+                        }
                     } catch (java.util.InputMismatchException e) {
                         System.out.println("ERRO! DIGITE APENAS NUMEROS");
                         scanner.nextLine(); // Limpa o buffer do teclado
@@ -130,6 +138,7 @@ public class Menu{//inicio da classe Menu
 
                     System.out.println("\nSolicitação em atendimento com sucesso!");
                     System.out.println("Código: " + seguraSolicitacao.getCodigo() + " | Solicitante: " + seguraSolicitacao.getSolicitante());
+                    System.out.println("Prioridade: " + seguraSolicitacao.getPrioridade());                    
                 }
                 break;
             }
@@ -140,7 +149,7 @@ public class Menu{//inicio da classe Menu
                     System.out.println("A fila está vazia!");
                 }
                 else{
-                      System.out.println(centralAtendimento.getFila());
+                      System.out.println(centralAtendimento.filaGlobal());
                 }
                 break;
             }
@@ -148,6 +157,9 @@ public class Menu{//inicio da classe Menu
             case 5:{ // EXIBE A QUANTIDADE DE SOLICITAÇÕES
                 System.out.println("Opção 5 selecionada: Exibir quantidade de solicitações");
                 System.out.printf("Quantidade de solicitações: %d\n", centralAtendimento.tamanhoFila());
+
+                System.out.printf("  Prioridade 1 (Alta): %d\n", centralAtendimento.tamanhoPrioridade(1));
+                System.out.printf("  Prioridade 2 (Baixa): %d\n", centralAtendimento.tamanhoPrioridade(2));                
                 break;
             }
 
@@ -163,6 +175,7 @@ public class Menu{//inicio da classe Menu
                     System.out.println("Tipo: " + seguraOperacao.getTipo());
                     System.out.println("Solicitacao Codigo: " + seguraOperacao.getSolicitacao().getCodigo());
                     System.out.println("Solicitante: " + seguraOperacao.getSolicitacao().getSolicitante());
+                    System.out.println("Prioridade: " + seguraOperacao.getSolicitacao().getPrioridade()); // PRIORIDADE (NOVO)
                 }
 
                 break;
@@ -294,8 +307,6 @@ public class Menu{//inicio da classe Menu
                 break; 
             }
 
-
-
             case 14:{ // EXIBE SOLICITAÇÕES POR CATEGORIA
                 if(centralAtendimento.listaSimplesVazia()){
                     System.out.println("\nNão há nada na Lista!\n");
@@ -320,7 +331,33 @@ public class Menu{//inicio da classe Menu
                 }
                 break;
             }
-                
+            
+            case 15:{ // CONCLUIR ATENDIMENTO (era a opção 7 pdf)
+                System.out.println("Opção 20 selecionada: Concluir atendimento");
+
+                if (!centralAtendimento.existeEmAtendimento()) {
+                    System.out.println("\nNão há nenhuma solicitação EM_ATENDIMENTO para concluir!\n");
+                    break;
+                }
+
+                // usa o buscaStatus para listar quem está em atendimento
+                System.out.println("\nSOLICITAÇÕES EM ATENDIMENTO\n");
+                System.out.println(centralAtendimento.buscaStatus("EM_ATENDIMENTO"));
+
+                System.out.print("Digite o código da solicitação a concluir: ");
+                scanner.nextLine(); // limpa o buffer do teclado
+
+                int codigoConcluir;
+                try {
+                    codigoConcluir = Integer.parseInt(scanner.nextLine().trim());
+                } catch (NumberFormatException e) {
+                    System.out.println("ERRO! DIGITE APENAS NUMEROS");
+                    break;
+                }
+
+                System.out.println("\n" + centralAtendimento.concluirAtendimento(codigoConcluir));
+                break;
+            }
 
             case 0:{
                 System.out.println("Encerrando o programa...");

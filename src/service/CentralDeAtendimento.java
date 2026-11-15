@@ -1,17 +1,13 @@
 package service;
 
 import java.time.LocalDateTime;
-
 import estrutura.LinkedList;
 import estrutura.TADFila;
 import estrutura.Fila;
 import estrutura.Pilha;
 import estrutura.Node;
-
 import model.Operacao;
 import model.Solicitacao;
-
-
 
 public class CentralDeAtendimento {//inicio da classe CentralDeAtendimento
 
@@ -22,10 +18,20 @@ public class CentralDeAtendimento {//inicio da classe CentralDeAtendimento
     private Pilha<Operacao> pilhaDeOperacoes = new Pilha<>();
     //instanciação da Fila
     private Fila<Solicitacao> filaDeSolicitacoes = new Fila<>();
-     //instancia da LstaSimples
+     
+    //fila de solicitacoes PRIORIDADE 1 ALTA
     private LinkedList<Solicitacao> listaDeSolicitacoes = new LinkedList<>(); 
+    
+    //fila de solicitacoes PRIORIDADE 2 BAIXA
+    private Fila<Solicitacao> filaDeSolicitacoesP2 = new Fila<>();
 
+    // rodizio 3 de prioridade alta para 1 de prioridade baixa 3:1 (evita a prioridade 2 esperar para sempre)
+    public static final int LIMITE_ALTA_CONSECUTIVA = 3;
 
+    // quantos atendimentos seguidos da prioridade 1 ja ocorreram enquanto havia prioridade 2 esperando
+    private int altasConsecutivas = 0;
+
+    
     Solicitacao joao = null;
     Solicitacao maria = null;
     Solicitacao pedro = null;
@@ -33,34 +39,136 @@ public class CentralDeAtendimento {//inicio da classe CentralDeAtendimento
     Solicitacao carlos = null;
     Solicitacao ana = null;
 
-    
 
+// =-=-=-=-=-=-=-= MÉTODOS DA PRIORIDADE (ALTA E BAIXA) PARA SABER QUAL FILA ATENDER =-=-=-=-=-=-=-=
 
+    //decide qual fila atende, so tem uma com gente  entao é fila usada. se tiver duas com algo, pega prioridade 1 alta, ate completar LIMITE_ALTA_CONSECUTIVA
+    private Fila<Solicitacao> filaDaVez() throws Exception {
+        boolean p1Vazia = filaDeSolicitacoes.qIsEmpty();
+        boolean p2Vazia = filaDeSolicitacoesP2.qIsEmpty();
 
-    //No caso 1
-    public boolean filaCheia() {
-        return filaDeSolicitacoes.qIsFull();
+        if (p1Vazia && !p2Vazia) {
+            return filaDeSolicitacoesP2;
+        }
+        if (p2Vazia) {
+            return filaDeSolicitacoes;
+        }
+        return (altasConsecutivas >= LIMITE_ALTA_CONSECUTIVA) ? filaDeSolicitacoesP2 : filaDeSolicitacoes;
     }
 
-    //1 CADASTRO
-    //esse throws Exception é chato demais, essa foi a forma mais rapida que encontrei de parar os erros, mas aparentemente fuunciona tambem se usarmos try-catch
+    //no caso 4
+    //monta o texto da fila global (c as 2 prioridades), sem instanciar uma nova lista contendo as todas as solicitaçôes
+    public String filaGlobal() throws Exception {
+        TADFila<Solicitacao> aux1 = new Fila<>();
+        TADFila<Solicitacao> aux2 = new Fila<>();
+        String texto = "";
+        int simulaAltas = altasConsecutivas;  // copia para a exibicao nao mexer no rodizio de filas de verdade
+        int posicao = 0;
+
+        while (!filaDeSolicitacoes.qIsEmpty() || !filaDeSolicitacoesP2.qIsEmpty()) {
+            boolean p1Vazia = filaDeSolicitacoes.qIsEmpty();
+            boolean p2Vazia = filaDeSolicitacoesP2.qIsEmpty();
+            boolean daP2 = (p1Vazia && !p2Vazia) || (!p1Vazia && !p2Vazia && simulaAltas >= LIMITE_ALTA_CONSECUTIVA);
+
+            Solicitacao s;
+            if (daP2) {
+                s = filaDeSolicitacoesP2.dequeue();
+                aux2.enqueue(s);
+                simulaAltas = 0;
+            } 
+            else {
+                s = filaDeSolicitacoes.dequeue();
+                aux1.enqueue(s);
+                if (!p2Vazia) {
+                    simulaAltas++;
+                }
+            }
+
+            posicao++;
+            texto += posicao + "º | Prioridade " + s.getPrioridade() + " | Código: " + s.getCodigo() + " | Solicitante: " + s.getSolicitante() + " | Descrição: " + s.getDescricao() + "\n";
+        }
+
+        // devolve cada solicitação para a sua fila, na ordem original
+        while (!aux1.qIsEmpty()) {
+            filaDeSolicitacoes.enqueue(aux1.dequeue());
+        }
+        while (!aux2.qIsEmpty()) {
+            filaDeSolicitacoesP2.enqueue(aux2.dequeue());
+        }
+
+        return "Fila de espera, na ordem de atendimento (rodízio " + LIMITE_ALTA_CONSECUTIVA + " de prioridade 1 : 1 de prioridade 2)\n" + texto;
+    }
+
+    //no caso 5
+    //quantidade aguardando em cada prioridade
+    public int tamanhoPrioridade(int prioridade) throws Exception {
+        if (prioridade == 2) {
+            return filaDeSolicitacoesP2.size();
+        }
+        return filaDeSolicitacoes.size();
+    }
+
+    // no caso 15 concluir atendimento
+    // existe alguma solicitação EM_ATENDIMENTO no cadastro geral?
+    public boolean existeEmAtendimento() throws Exception {
+        Node<Solicitacao> atual = listaDeSolicitacoes.getHead();
+
+        while (atual != null) {
+            if (atual.getDado().getStatus().equals("EM_ATENDIMENTO")) {
+                return true;
+            }
+            atual = atual.getProx();
+        }
+        return false;
+    }
+
+
+// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- MÉTODOS AUXILIARES =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+    public boolean filaCheia() { 
+        return filaDeSolicitacoes.qIsFull() || filaDeSolicitacoesP2.qIsFull();
+    }
+
+    public boolean filaVazia() throws Exception{
+        return filaDeSolicitacoes.qIsEmpty() && filaDeSolicitacoesP2.qIsEmpty();
+    }    
+
+    public boolean pilhaVazia() throws Exception{
+        return pilhaDeOperacoes.isEmpty();
+    }
+
+    public boolean listaSimplesVazia() throws Exception{
+        return listaDeSolicitacoes.isEmpty();
+    }
+
+
+// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=- MÉTODOS PRINCIPAIS (DE CADA CASE) =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+    // ===================== CASE 1 = Cadastrar nova solicitação ======================
     public Solicitacao cadastrar(String nome, String descricao, String categoria, int prioridade) throws Exception {
+        if (prioridade != 1 && prioridade != 2) {
+            throw new IllegalArgumentException("Prioridade inválida: " + prioridade + ". Use 1 (Alta) ou 2 (Baixa).");
+        }        
+        
+        // data em formato timestamp para guardar na solicitação
         LocalDateTime dataHora = LocalDateTime.now();// Ex: 2026-09-20T17:05:19.123
 
-        contador++; //soma o contador toda vez que apertamos para fazer uma nova solicitação, mesmo que desfeita ou manipulada, ela contará como uma.
+        contador++; //soma o contador toda vez que cria uma nova solicitação, mesmo que desfeita ou manipulada, ela contará como uma. 
+                    // o contador é usado como código da solicitação, e o código é unico e nao se repete
 
         //instancia a solicitação com as informações fornecidas pelo usuário, sempre vai como agurdando para a ista
         Solicitacao novaSolicitacao = new Solicitacao(contador, nome, descricao, categoria, prioridade, dataHora, "AGUARDANDO", null);
 
-        // Adiciona na Fila
-        filaDeSolicitacoes.enqueue(novaSolicitacao);
+        if (prioridade == 2) {
+            filaDeSolicitacoesP2.enqueue(novaSolicitacao);
+        } else {
+            filaDeSolicitacoes.enqueue(novaSolicitacao);
+        }
 
-        // Registra a Operacao na Pilha, ESTA CADASTRO PORQUE VOCE ACABOU DE CADASTRAR UMA NOVA PESSOAS
+        // Registra a Operacao na Pilha
         Operacao operacao = new Operacao("CADASTRO", novaSolicitacao);
         
         //Adiciona na Pilha
         pilhaDeOperacoes.push(operacao);//coloca na pilha
-
 
         //Adiciona na Lista
         listaDeSolicitacoes.addLast(novaSolicitacao);
@@ -68,60 +176,56 @@ public class CentralDeAtendimento {//inicio da classe CentralDeAtendimento
         return novaSolicitacao;
     }
 
-
-    //No caso 2, 3, 4, 5, 6, 7
-    public boolean filaVazia() throws Exception{
-        return filaDeSolicitacoes.qIsEmpty();
-    }
-
-    //No caso 2
-    // devolve a primeira solicitação da fila sem tirar (opção 2)
+    // ==================== CASE 2 = Consultar próxima solicitação ====================
+    // devolve a primeira solicitação da fila sem tirar 
     public Solicitacao primeiraDaFila() throws Exception  {
+        if (filaDaVez() == filaDeSolicitacoesP2) {
+            return filaDeSolicitacoesP2.front();
+        }
         return filaDeSolicitacoes.front();
     }
 
-
-    //3 ATENDIMENTO
+    // ===================== CASE 3 = Atender próxima solicitação =====================
     public Solicitacao atender(String responsavelAtendimento) throws Exception {
-        Solicitacao seguraSolicitacao = filaDeSolicitacoes.dequeue();//dequeue tira a solicitacao ultima e coloca no segura_solicitacao
+
+        Fila<Solicitacao> filaEscolhida = filaDaVez(); // descobre qual fila atende agora - prioridade alta ou baixa
+        int altasAntes = altasConsecutivas; // guarda o rodizio de antes para o desfazer
+
+        Solicitacao seguraSolicitacao = filaEscolhida.dequeue();//dequeue tira a solicitacao ultima e coloca no segura_solicitacao
 
         seguraSolicitacao.setStatus("EM_ATENDIMENTO"); // Atualiza o status da solicitação que esta sendo segurada
         seguraSolicitacao.setResponsavelAtendimento(responsavelAtendimento);
 
-        Operacao operacao = new Operacao("ATENDIMENTO", seguraSolicitacao);// Empilha a operação de atendimento, aqui vamos criar uma operação que é a solicitação antiga, agora atualizada, jogar com o pop para a pilha
+        // atualiza o rodizio   se tendeu P2 = zera, se atendeu P1 com P2 esperando = soma 1
+        if (filaEscolhida == filaDeSolicitacoesP2) {
+            altasConsecutivas = 0;
+        } else if (!filaDeSolicitacoesP2.qIsEmpty()) {
+            altasConsecutivas++;
+        }
+
+        Operacao operacao = new Operacao("ATENDIMENTO", seguraSolicitacao, altasAntes);// Empilha a operação de atendimento, aqui vamos criar uma operação que é a solicitação antiga, agora atualizada, jogar com o pop para a pilha
         pilhaDeOperacoes.push(operacao);
 
         return seguraSolicitacao;
     }
 
-
-    //no caso 4
-    //filade solicitacao para o menu poder imprimir
+    // ===================== CASE 4 = Exibir fila de solicitações =====================
     public TADFila<Solicitacao> getFila() throws Exception{
         return filaDeSolicitacoes;
     }
 
-
-    //no caso 5
+    // ================== CASE 5 = Exibir quantidade de solicitações ==================
     public int tamanhoFila() throws Exception{
-        return filaDeSolicitacoes.size();
+        return filaDeSolicitacoes.size() + filaDeSolicitacoesP2.size(); // soma as 2 filas de prioridades
     }
 
-
-    //no caso 6
-    public boolean pilhaVazia() throws Exception{
-        return pilhaDeOperacoes.isEmpty();
-    }
-
-
-    //no caso 6
-    //topo da pilha sem tirar
+    // ================= CASE 6 = Consultar última operação realizada =================
+    //devolve o topo da pilha sem tirar
     public Operacao ultimaOperacao() throws Exception{
         return pilhaDeOperacoes.top();
     }
 
-
-    //7 HISTÓRICO
+    // ==================== CASE 7 = Exibir histórico de operações ====================
     // monta o texto do histórico e devolve para o menu imprimir
     public String historico() throws Exception {
         Pilha<Operacao> pilhaAuxiliar = new Pilha<>();//pop perde o elemento quando tira
@@ -130,7 +234,7 @@ public class CentralDeAtendimento {//inicio da classe CentralDeAtendimento
         // Desempilhando e guardando todos os nomes (pop)
         while (!pilhaDeOperacoes.isEmpty()) {
             Operacao operacao = pilhaDeOperacoes.pop();//pega o topo da pilha, lembra que pop tira e depois perde o elemento se não colocado em algum lugar
-            caixinha_operacao += "Solicitação: " + operacao.getSolicitacao().getCodigo() + " " + operacao.getTipo() + "\n";
+            caixinha_operacao += "Solicitação: " + operacao.getSolicitacao().getCodigo() + " " + operacao.getTipo() + " (Prioridade " + operacao.getSolicitacao().getPrioridade() + ")\n"; // mostrando a prioridade
             pilhaAuxiliar.push(operacao);
         }
 
@@ -138,19 +242,64 @@ public class CentralDeAtendimento {//inicio da classe CentralDeAtendimento
         while (!pilhaAuxiliar.isEmpty()) {
             pilhaDeOperacoes.push(pilhaAuxiliar.pop());
         }
-
-
         return caixinha_operacao;
     }
 
-
-    //8 DESFAZER
+    // ====================== CASE 8 = Desfazer última operação =======================
     // devolve a mensagem que o menu vai mostrar
     public String desfazer() throws Exception{
         String mensagem_tipo = "";
 
         // Remove a última operação realizada no topo da pilha, pega a última
         Operacao ultimaOperacao = pilhaDeOperacoes.pop();
+
+        //  se for atendimento, devolve o rodizio ao estado de antes dele
+        if (ultimaOperacao.getTipo().equals("ATENDIMENTO")) {
+            altasConsecutivas = ultimaOperacao.getAltasConsecutivasAntes();
+        }
+
+        // CADASTRO de prioridade 2: mesma logica do cadastro mais abaixo, mas na fila P2
+        if (ultimaOperacao.getTipo().equals("CADASTRO") && ultimaOperacao.getSolicitacao().getPrioridade() == 2) {
+            int qtdParaMover = filaDeSolicitacoesP2.size() - 1;
+            TADFila<Solicitacao> filaAux = new Fila<>();
+
+            for (int i = 0; i < qtdParaMover; i++) {
+                filaAux.enqueue(filaDeSolicitacoesP2.dequeue());
+            }
+
+            filaDeSolicitacoesP2.dequeue(); // remove o último elemento que fica
+            ultimaOperacao.getSolicitacao().setStatus("CANCELADA");
+
+            while (!filaAux.qIsEmpty()) {
+                filaDeSolicitacoesP2.enqueue(filaAux.dequeue());
+            }
+
+            return "Último cadastro desfeito com sucesso!";
+        }
+
+        // ATENDIMENTO de prioridade 2: mesma logica do atendimento mais abaixo, mas na fila P2
+        if (ultimaOperacao.getTipo().equals("ATENDIMENTO") && ultimaOperacao.getSolicitacao().getPrioridade() == 2) {
+            ultimaOperacao.getSolicitacao().setStatus("AGUARDANDO");
+
+            TADFila<Solicitacao> filaRecolocacao = new Fila<>();
+            filaRecolocacao.enqueue(ultimaOperacao.getSolicitacao());
+
+            while(!filaDeSolicitacoesP2.qIsEmpty()){
+                filaRecolocacao.enqueue(filaDeSolicitacoesP2.dequeue());
+            }
+            while(!filaRecolocacao.qIsEmpty()){
+                filaDeSolicitacoesP2.enqueue(filaRecolocacao.dequeue());
+            }
+
+            return "Atendimento desfeito! O cliente retornou à fila na sua posição original";
+        }
+
+        // CONCLUSAO (opção 20) -> volta a solicitação para EM_ATENDIMENTO
+        if (ultimaOperacao.getTipo().equals("CONCLUSAO")) {
+            ultimaOperacao.getSolicitacao().setStatus("EM_ATENDIMENTO");
+            // TODO (integrante da Lista Dupla): remover esta solicitação do histórico de atendimentos concluídos aqui
+            return "Conclusão desfeita! A solicitação voltou para EM_ATENDIMENTO";
+        }
 
         // vê o que tem nessa ultima operação
         // se for um cadastro, desfaremos cadastro
@@ -199,9 +348,7 @@ public class CentralDeAtendimento {//inicio da classe CentralDeAtendimento
         return mensagem_tipo;
     }
 
-
-    //9 DADOS SINTÉTICOS
-
+    // ====================== CASE 9 = Inserir dados sintéticos =======================
     // devolve false se os dados já estão na fila (o menu avisa o usuário)
     public boolean inserirDadosSinteticos() throws Exception {
 
@@ -220,16 +367,16 @@ public class CentralDeAtendimento {//inicio da classe CentralDeAtendimento
 
         joao = new Solicitacao(contador+=1, "João", "Problema no sistema", "TI", 1, dataHora, "AGUARDANDO",null);
         maria = new Solicitacao(contador+=1, "Maria", "Problema com impressora", "TI", 2, dataHora,"AGUARDANDO",null);
-        pedro = new Solicitacao(contador+=1, "Pedro", "Problema com computador", "TI", 3, dataHora,"AGUARDANDO",null);
-        andre = new Solicitacao(contador+=1, "André", "Problema com celular", "TI", 4, dataHora,"AGUARDANDO",null);
-        carlos = new Solicitacao(contador+=1, "Carlos", "Problema com notebook", "TI", 5, dataHora,"AGUARDANDO",null);
-        ana = new Solicitacao(contador+=1, "Ana", "Problema com monitor", "TI", 6, dataHora,"AGUARDANDO",null);
+        pedro = new Solicitacao(contador+=1, "Pedro", "Problema com computador", "TI", 1, dataHora,"AGUARDANDO",null);
+        andre = new Solicitacao(contador+=1, "André", "Problema com celular", "TI", 1, dataHora,"AGUARDANDO",null);
+        carlos = new Solicitacao(contador+=1, "Carlos", "Problema com notebook", "TI", 2, dataHora,"AGUARDANDO",null);
+        ana = new Solicitacao(contador+=1, "Ana", "Problema com monitor", "TI", 1, dataHora,"AGUARDANDO",null);
 
         filaDeSolicitacoes.enqueue(joao);
-        filaDeSolicitacoes.enqueue(maria);
+        filaDeSolicitacoesP2.enqueue(maria); 
         filaDeSolicitacoes.enqueue(pedro);
         filaDeSolicitacoes.enqueue(andre);
-        filaDeSolicitacoes.enqueue(carlos);
+        filaDeSolicitacoesP2.enqueue(carlos);
         filaDeSolicitacoes.enqueue(ana);
 
         pilhaDeOperacoes.push(new Operacao("CADASTRO", joao));
@@ -251,21 +398,12 @@ public class CentralDeAtendimento {//inicio da classe CentralDeAtendimento
         return true;
     }
 
-    
-    //Usado na 10 e na 11 
-    public boolean listaSimplesVazia() throws Exception{
-        return listaDeSolicitacoes.isEmpty();
-    }
-
-
-    //10 EXIBIR TODAS AS SOLICITAÇÕES
+    // ==================== CASE 10 = Exibir todas as solicitações ====================
     public String listar() throws Exception {
         return listaDeSolicitacoes.toString();
     }
 
-
-    
-    //11 Pesquisa por codigo
+    // ================== CASE 11 = Pesquisar solicitação por código ==================
     public Solicitacao buscaCodigo (int codigoDaBusca) throws Exception{
         Node<Solicitacao> atual=listaDeSolicitacoes.getHead();
         
@@ -280,12 +418,7 @@ public class CentralDeAtendimento {//inicio da classe CentralDeAtendimento
 
     }
 
-
-    
-
-    
-    
-    //13 Pesquisa por codigo
+    // =================== CASE 13 = Exibir solicitações por status ===================
     public String buscaStatus (String statusDaBusca) throws Exception{
         String mensagemErro = "Não há uma solicitação com esse STATUS.";
         String resultado = "";   // começa vazio
@@ -306,9 +439,7 @@ public class CentralDeAtendimento {//inicio da classe CentralDeAtendimento
         return resultado;
     }
 
-
-
-    //14 Pesquisa por categoria
+    // ================= CASE 14 = Exibir solicitações por categoria ==================
     public String buscaCategoria (String categoriaDaBusca) throws Exception{
         String mensagemErro = "Não há uma solicitação com essa CATEGORIA.";
         String resultado = "";   // começa vazio
@@ -329,4 +460,24 @@ public class CentralDeAtendimento {//inicio da classe CentralDeAtendimento
         return resultado;
     }
 
+    // ======================== CASE 15 = Concluir atendimento ========================
+    // conclui o atendimento, devolve a mensagem que o menu vai mostrar (igual ao desfazer)
+    // só conclui solicitação EM_ATENDIMENTO e registra a operação CONCLUSAO na pilha
+    public String concluirAtendimento(int codigo) throws Exception {
+        Solicitacao s = buscaCodigo(codigo); 
+
+        if (s == null) {
+            return "Não existe solicitação com o código " + codigo + ".";
+        }
+        if (!s.getStatus().equals("EM_ATENDIMENTO")) {
+            return "A solicitação " + codigo + " está com status " + s.getStatus() + ". Só é possível concluir solicitações EM_ATENDIMENTO.";
+        }
+
+        s.setStatus("CONCLUIDA");
+        pilhaDeOperacoes.push(new Operacao("CONCLUSAO", s));
+
+        // TODO (integrante da Lista Dupla): inserir esta solicitação no histórico de atendimentos concluídos aqui
+
+        return "Atendimento da solicitação " + codigo + " concluído com sucesso!";
+    }
 }//fim CentralDeAtendimento
