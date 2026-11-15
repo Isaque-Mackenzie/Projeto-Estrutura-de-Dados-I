@@ -4,15 +4,13 @@ package estrutura;
 // Lista genérica de qualquer tipo de dado não primitivo.
 // Autor1: Ivan Carlos Alcântara de Oliveira.
 // Data da Criação: 10/10/2026. 15h.
-public class ListaDupla<T extends Comparable<T>> {
+public class ListaDupla<T> {
     private NoDuplo<T> head;
-    private NoDuplo<T> tail;
     private int size;
 
     // construtor da DLL
     public ListaDupla() {
         head = null;
-        tail = null;
         size = 0;
     }
 
@@ -41,47 +39,42 @@ public class ListaDupla<T extends Comparable<T>> {
         return head;
     }
 
-
-
-    // Mostra o conteúdo da lista em ordem crescente - ISAQUE
-    public void showAscending(){
-        if(isEmpty()){
-            System.out.print("\nNão há histórico para ser exibido.\n");
+    // Mostra o conteúdo da lista em ordem crescente
+    public void showAscending() {
+        if (isEmpty()) {
+            System.out.print("Lista vazia!\n");
             return;
         }
-
-        System.out.println("Histórico das solicitações em ordem crescente: [")
-        Node<T> atual = head; // Cria uma variável local auxiliar para percorrer a lista
-
-        while(atual.getNext() != null){
-            System.out.print(atual.getElement());
-            atual = atual.getNext();
-            System.out.print(" ");
+        System.out.print("Lista: [ ");
+        NoDuplo<T> atual = head;
+        while (atual != null) {
+            System.out.print(atual.getData());
+            atual = atual.getRight();
+            if (atual != null) System.out.print(" ");
         }
         System.out.print("]");
     }
 
-
-    // Mostra o conteúdo da lista em ordem decrescente - ISAQUE
+    // Mostra o conteúdo da lista em ordem decrescente
     public void showDescending() {
-        if(isEmpty()){
-            System.out.print("\nNão há histórico para ser exibido.\n");
+        if (isEmpty()) {
+            System.out.print("Lista vazia!\n");
             return;
         }
-
-        System.out.println("Histórico das solicitações em ordem decrescente: [");
-        Node<T> atual = tail; // Cria uma variável local auxiliar para percorrer a lista
-
-        while(atual.getPrev() != null){
-            System.out.print(atual.getElement());
-            atual = atual.getPrev();
-            System.out.print(" ");
+        NoDuplo<T> atual = head;
+        while (atual.getRight() != null) atual = atual.getRight();
+        System.out.print("Lista: [ ");
+        while (atual != null) {
+            System.out.print(atual.getData());
+            atual = atual.getLeft();
+            if (atual != null) System.out.print(" ");
         }
         System.out.print("]");
     }
 
+    
 
-
+    /* 
     // Insere um dado (data) na lista em ordem crescente
     public boolean insertAscending(T data) {
         if (isFull()) return false;
@@ -108,6 +101,25 @@ public class ListaDupla<T extends Comparable<T>> {
         return true;
     }
 
+    */
+    // Insere um dado (data) no FINAL da lista.
+    // Sem compareTo a lista não é ordenada por valor: a ordem é a ordem de chegada.
+    public boolean insertAscending(T data) {
+        if (isFull()) return false;
+        NoDuplo<T> novo = new NoDuplo<T>(data, null, null);
+        if (isEmpty()) {
+            head = novo;
+        } else {
+            NoDuplo<T> atual = head;
+            while (atual.getRight() != null) atual = atual.getRight();
+            novo.setLeft(atual);      // o novo aponta para trás
+            atual.setRight(novo);     // o último aponta para o novo
+        }
+        size++;
+        return true;
+    }
+
+
     // Posicoes iniciam em 1; retorna null se a posicao for invalida.
     public NoDuplo<T> get(int pos) {
         if (pos <= 0 || pos > size) return null;
@@ -132,6 +144,7 @@ public class ListaDupla<T extends Comparable<T>> {
         size = 0;
     }
 
+/* 
     // Retorna a posicao (a partir de 1) ou -1 se nao encontrado.
     public int searchAscending(T data) {
         NoDuplo<T> atual = head;
@@ -142,7 +155,18 @@ public class ListaDupla<T extends Comparable<T>> {
         }
         return atual != null && atual.getData().compareTo(data) == 0 ? pos : -1;
     }
-
+*/
+    // Retorna a posicao (a partir de 1) ou -1 se nao encontrado.
+    public int searchAscending(T data) {
+        NoDuplo<T> atual = head;
+        int pos = 1;
+        while (atual != null && !atual.getData().equals(data)) {
+            atual = atual.getRight();
+            pos++;
+        }
+        return atual != null ? pos : -1;
+    }
+/* 
     // Remove a primeira ocorrencia do valor informado.
     public boolean remove(T data) {
         NoDuplo<T> atual = head;
@@ -152,6 +176,19 @@ public class ListaDupla<T extends Comparable<T>> {
         unlink(atual);
         return true;
     }
+
+    
+*/
+    // Remove a primeira ocorrencia do valor informado.
+    public boolean remove(T data) {
+        NoDuplo<T> atual = head;
+        while (atual != null && !atual.getData().equals(data))
+            atual = atual.getRight();
+        if (atual == null) return false;
+        unlink(atual);
+        return true;
+    }
+    
 
     // Remove e retorna o no na posicao (a partir de 1).
     public NoDuplo<T> remove(int pos) {
