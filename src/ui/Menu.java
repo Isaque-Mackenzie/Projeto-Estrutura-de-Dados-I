@@ -22,32 +22,47 @@ public class Menu{//inicio da classe Menu
 
         //menu
         System.out.println(//inicio menu
-            "\n-=-=-=-=-=-=-=-=- MENU -=-=-=-=-=-=-=-=-\n" +
-            "1 - Cadastrar nova solicitação\n" +
-            "2 - Consultar próxima solicitação\n" +
-            "3 - Atender próxima solicitação\n" +
-            "4 - Exibir fila de solicitações\n" +
-            "5 - Exibir quantidade de solicitações\n" +
-            "6 - Consultar última operação realizada\n" +
-            "7 - Exibir histórico de operações\n" +
-            "8 - Desfazer última operação\n" +
-            "9 - Inserir Dados Sintéticos\n" +
-            "10 - Exibir todas as solicitações\n" +
-            "11 - Pesquisar solicitação por código\n" +
-            "12 - Remover solicitação\n" +
-            "13 - Exibir solicitações por status\n" +
-            "14 - Exibir solicitações por categoria\n" +
-            "15 - Concluir atendimento\n" +
-
-            "16 - Exibir hitorico de atendimento (primeiro ao ultimo)\n"+
-            "17 - Exibir hitorico de atendimento (ultimo ao primeiro)\n"+
+            "\n=================================================\n" +
+            "        CENTRAL DE ATENDIMENTO E SERVIÇOS        \n" +
+            "=================================================\n" +
+            "ATENDIMENTO\n" +
+            "1 - Cadastrar nova solicitação\n" + //
+            "2 - Consultar próxima solicitação\n" + //
+            "3 - Atender próxima solicitação\n" + //
+            "4 - Exibir fila de espera\n" + //
+            "5 - Quantidade de solicitações aguardando\n\n" + //
             
-            "0 - Encerrar a operação\n"
+            "OPERAÇÕES\n" +
+            "6 - Consultar última operação\n" + //
+            "7 - Concluir atendimento\n" + //################### era a 15
+            "8 - Exibir histórico recente\n" + // ######### e a 7
+            "9 - Desfazer última operação\n\n" + // ######### e a 8
+            
+            "CADASTRO GERAL\n" +
+            "10 - Exibir todas as solicitações\n" + //
+            "11 - Pesquisar solicitação por código\n" + //
+            "12 - Remover solicitação\n" + //
+            "13 - Exibir solicitações por status\n" + //
+            "14 - Exibir solicitações por categoria\n\n" + 
+            
+            "HISTÓRICO DE ATENDIMENTOS\n" +
+            "15 - Exibir do primeiro ao último\n" + // 
+            "16 - Exibir do último ao primeiro\n" +
+            "17 - Navegar pelo histórico\n" +
+            "18 - Pesquisar atendimento\n\n" +
+            
+            "RELATÓRIOS E SISTEMA\n" +
+            "19 - Exibir resumo do sistema\n" +
+            "20 - Inserir Dados Sintéticos\n\n" + // Funcionalidade extra do menu antigo mantida aqui
+            
+            "0 - Encerrar\n" +
+            "================================================="
         );//fim menu
 
         //solicita ao usuário que escolha uma opção do menu
         System.out.print("\nEscolha uma opção: ");
         int opcao;
+
         try{
             opcao = scanner.nextInt();
         } catch (java.util.InputMismatchException e) {
@@ -57,7 +72,7 @@ public class Menu{//inicio da classe Menu
         }
 
         switch (opcao) {
-            case 1:{ // CADASTRA A NOVA SOLICITAÇÃO
+            case 1:{ // CADASTRAR NOVA SOLICITAÇÃO
                 System.out.println("Opção 1 selecionada: Cadastrar nova solicitação");
 
                 // CASO A FILA ESTIVER CHEIA, ENTÃO NEM PERGUNTA AS INFO PARA CADASTRAR, SO AVISA Q TA CHEIA E VOLTA PARA O MENU
@@ -114,7 +129,7 @@ public class Menu{//inicio da classe Menu
                 break;
             }
 
-            case 2:{ // CONSULTA A PROXIMA SOLICITAÇÃO
+            case 2:{ // CONSULTAR PROXIMA SOLICITAÇÃO
                 System.out.println("Opção 2 selecionada: Consultar próxima solicitação");
                 if(centralAtendimento.filaVazia()){
                     System.out.println("\nA fila está vazia!\n");
@@ -126,7 +141,7 @@ public class Menu{//inicio da classe Menu
                 break;
             }
 
-            case 3:{
+            case 3:{ // ATENDER A PROXIMA SOLICITAÇÃO
                 System.out.println("Opção 3 selecionada: Atender próxima solicitação");
                 if(centralAtendimento.filaVazia()){
                     System.out.println("\nA fila está vazia! Não há solicitação para ser atendida\n");
@@ -147,8 +162,8 @@ public class Menu{//inicio da classe Menu
                 break;
             }
 
-            case 4:{ // EXIBE A FILA DE SOLICITAÇÕES
-                System.out.println("Opção 4 selecionada: Exibir fila de solicitações");
+            case 4:{ // EXIBIR A FILA DE ESPERA
+                System.out.println("Opção 4 selecionada: Exibir fila de espera");
                 if(centralAtendimento.filaVazia()){
                     System.out.println("A fila está vazia!");
                 }
@@ -158,8 +173,8 @@ public class Menu{//inicio da classe Menu
                 break;
             }
 
-            case 5:{ // EXIBE A QUANTIDADE DE SOLICITAÇÕES
-                System.out.println("Opção 5 selecionada: Exibir quantidade de solicitações");
+            case 5:{ // QUANTIDADE DE SOLICITAÇÕES AGUARDANDO
+                System.out.println("Opção 5 selecionada: Quantidade de solicitações aguardando");
                 System.out.printf("Quantidade de solicitações: %d\n", centralAtendimento.tamanhoFila());
 
                 System.out.printf("  Prioridade 1 (Alta): %d\n", centralAtendimento.tamanhoPrioridade(1));
@@ -167,8 +182,8 @@ public class Menu{//inicio da classe Menu
                 break;
             }
 
-            case 6:{ // CONSULTA A ÚLTIMA OPERAÇÃO REALIZADA
-                System.out.println("Opção 6 selecionada: Consultar última operação realizada");
+            case 6:{ // CONSULTAR A ÚLTIMA OPERAÇÃO
+                System.out.println("Opção 6 selecionada: Consultar a última operação");
                 if(centralAtendimento.pilhaVazia()){
                     System.out.println("\nNão há operações registradas!\n");
                 }
@@ -185,8 +200,34 @@ public class Menu{//inicio da classe Menu
                 break;
             }
 
-            case 7:{ // EXIBE O HISTÓRICO DE OPERAÇÕES
-                System.out.println("Opção 7 selecionada: Exibir histórico de operações");
+            case 7:{ // CONCLUIR ATENDIMENTO
+                System.out.println("Opção 7 selecionada: Concluir atendimento");
+
+                if (!centralAtendimento.existeEmAtendimento()) {
+                    System.out.println("\nNão há nenhuma solicitação EM_ATENDIMENTO para concluir!\n");
+                    break;
+                }
+
+                // usa o buscaStatus para listar quem está em atendimento
+                System.out.println("\nSOLICITAÇÕES EM ATENDIMENTO\n");
+                System.out.println(centralAtendimento.buscaStatus("EM_ATENDIMENTO"));
+
+                System.out.print("Digite o código da solicitação a concluir: ");
+                scanner.nextLine(); // limpa o buffer do teclado
+
+                int codigoConcluir;
+                try {
+                    codigoConcluir = Integer.parseInt(scanner.nextLine().trim());
+                } catch (NumberFormatException e) {
+                    System.out.println("ERRO! DIGITE APENAS NUMEROS");
+                    break;
+                }
+
+                System.out.println("\n" + centralAtendimento.concluirAtendimento(codigoConcluir));
+                break;
+            }
+            case 8:{ // EXIBIR HISTÓRICO RECENTE
+                System.out.println("Opção 8 selecionada: Exibir histórico recente");
                 if (centralAtendimento.pilhaVazia()) {
                     System.out.println("Nenhuma operação realizada para exibir\n");
                 }
@@ -198,11 +239,11 @@ public class Menu{//inicio da classe Menu
                 break;
             }
 
-            case 8: { // DESFAZ A ÚLTIMA OPERAÇÃO - Inicio case 8
+            case 9:{ // DESFAZER ÚLTIMA OPERAÇÃO
                 if (centralAtendimento.pilhaVazia()) {
                     System.out.println("Não há nenhuma operação realizada para desfazer.");
                 } else {
-                    System.out.println("Opção 8 selecionada: Desfazer última operação");
+                    System.out.println("Opção 9 selecionada: Desfazer última operação");
 
                     // a central desfaz e devolve a mensagem de como foi
                     System.out.println(centralAtendimento.desfazer());
@@ -211,20 +252,7 @@ public class Menu{//inicio da classe Menu
                  break;
             }// Fim case 8
 
-            case 9:{ // DADOS SINTÉTICOS
 
-                // a central devolve false se as solicitações de teste já estão na fila aguardando
-                if (!centralAtendimento.inserirDadosSinteticos()) {
-
-                    System.out.println("Os dados sintéticos já foram inseridos e estão na fila!");
-                    System.out.println("Atenda ou remova as solicitações atuais antes de carregar novamente.");
-
-                    break; // Cancela a Opção 9 e volta pro menu
-                }
-                System.out.println("Opção 9 selecionada: Dados Sintéticos");
-
-                break;
-            }
 
 
             case 10:{ // EXIBE TODAS AS SOLICITAÇÕES (percorre a lista simples)
@@ -242,7 +270,7 @@ public class Menu{//inicio da classe Menu
  
 
 
-            case 11:{//Pesquisar solicitação por Codigo
+            case 11:{ // PESQUISAR SOLICITAÇÃO POR CÓDIGO
                 System.out.println("Opção 11 selecionada: Pesquisar Solicitação por codigo");
 
                 //se a lista tiver vazia ENTÃO
@@ -285,9 +313,14 @@ public class Menu{//inicio da classe Menu
                 break;
 
             } 
+            case 12:{ // REMOVER SOLICITAÇÃO
+                System.out.println("Opção 12 selecionada: Remover solicitação");
+                // TODO  fazer a opção 12 Remover solicitação
+                break;
+            }
 
-
-            case 13:{
+            case 13:{ // EXIBIR SOLICITAÇÕES POR STATUS
+                System.out.println("Opção 13 selecionada: Exibir solicitações por status");
                 if(centralAtendimento.listaSimplesVazia()){
                     System.out.println("\nNão há nada na Lista!\n");
                     break;
@@ -311,7 +344,8 @@ public class Menu{//inicio da classe Menu
                 break; 
             }
 
-            case 14:{ // EXIBE SOLICITAÇÕES POR CATEGORIA
+            case 14:{ // EXIBIR SOLICITAÇÕES POR CATEGORIA
+                System.out.println("Opção 14 selecionada: Exibir solicitações por categoria");
                 if(centralAtendimento.listaSimplesVazia()){
                     System.out.println("\nNão há nada na Lista!\n");
                     break;
@@ -336,38 +370,12 @@ public class Menu{//inicio da classe Menu
                 break;
             }
             
-            case 15:{ // CONCLUIR ATENDIMENTO (era a opção 7 pdf)
-                System.out.println("Opção 20 selecionada: Concluir atendimento");
-
-                if (!centralAtendimento.existeEmAtendimento()) {
-                    System.out.println("\nNão há nenhuma solicitação EM_ATENDIMENTO para concluir!\n");
-                    break;
-                }
-
-                // usa o buscaStatus para listar quem está em atendimento
-                System.out.println("\nSOLICITAÇÕES EM ATENDIMENTO\n");
-                System.out.println(centralAtendimento.buscaStatus("EM_ATENDIMENTO"));
-
-                System.out.print("Digite o código da solicitação a concluir: ");
-                scanner.nextLine(); // limpa o buffer do teclado
-
-                int codigoConcluir;
-                try {
-                    codigoConcluir = Integer.parseInt(scanner.nextLine().trim());
-                } catch (NumberFormatException e) {
-                    System.out.println("ERRO! DIGITE APENAS NUMEROS");
-                    break;
-                }
-
-                System.out.println("\n" + centralAtendimento.concluirAtendimento(codigoConcluir));
-                break;
-            }
 
 
 
 
-            case 16:{
-                System.out.println("Opção 16 selecionada: Exibir Historico de Atendimento (primeiro ao ultimo)\"");
+            case 15:{ // EXIBIR DO PRIMEIRO AO ÚLTIMO
+                System.out.println("Opção 15 selecionada: Exibir Historico de Atendimento (primeiro ao ultimo)\n");
 
                 if (centralAtendimento.listaDuplaVazia()) {
                     System.out.println("\nNão há nenhuma solicitação no Historico.\n");
@@ -383,8 +391,8 @@ public class Menu{//inicio da classe Menu
             }
 
 
-            case 17:{
-                System.out.println("Opção 17 selecionada: Exibir Historico de Atendimento (ultimo ao primeiro)");
+            case 16:{ // EXIBIR DO ÚLTIMO AO PRIMEIRO
+                System.out.println("Opção 16 selecionada: Exibir Historico de Atendimento (ultimo ao primeiro)\n");
 
                 if (centralAtendimento.listaDuplaVazia()) {
                     System.out.println("\nNão há nenhuma solicitação no Historico.\n");
@@ -396,12 +404,38 @@ public class Menu{//inicio da classe Menu
                 System.out.println(); 
                 break;
 
+            }
+            case 17:{ // NAVEGAR PELO HISTÓRICO
+                System.out.println("Opção 17 selecionada: Navegar pelo histórico");
+                // TODO FAZER OPÇÂO 17 Navegar pelo histórico
+                break;
+            }
+            case 18:{ // PESQUISAR ATENDIMENTO
+                System.out.println("Opção 18 selecionada: Pesquisar atendimento");
+                // TODO FAZER OPÇÂO 18 Pesquisar atendimento
+                break;
 
             }
+            case 19:{ // EXIBIR RESUMO DO SISTEMA
+                System.out.println("Opção 19 selecionada: Exibir resumo do sistema");
+                // TODO FAZER OPÇÂO 19 Exibir resumo do sistema
+                break;
+            }
 
+            case 20:{ // DADOS SINTÉTICOS
 
+                // a central devolve false se as solicitações de teste já estão na fila aguardando
+                if (!centralAtendimento.inserirDadosSinteticos()) {
 
+                    System.out.println("Os dados sintéticos já foram inseridos e estão na fila!");
+                    System.out.println("Atenda ou remova as solicitações atuais antes de carregar novamente.");
 
+                    break; // Cancela a Opção 20 e volta pro menu
+                }
+                System.out.println("Opção 20 selecionada: Inserir Dados Sintéticos");
+
+                break;
+            }
             case 0:{
                 System.out.println("Encerrando o programa...");
                 return true; // Sai do método exibir, encerrando o programa

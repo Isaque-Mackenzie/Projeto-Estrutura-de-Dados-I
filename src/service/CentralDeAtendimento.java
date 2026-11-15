@@ -238,7 +238,30 @@ public class CentralDeAtendimento {//inicio da classe CentralDeAtendimento
         return pilhaDeOperacoes.top();
     }
 
-    // ==================== CASE 7 = Exibir histórico de operações ====================
+    // ======================== CASE 7 = Concluir atendimento ========================
+    // conclui o atendimento, devolve a mensagem que o menu vai mostrar (igual ao desfazer)
+    // só conclui solicitação EM_ATENDIMENTO e registra a operação CONCLUSAO na pilha
+    public String concluirAtendimento(int codigo) throws Exception {
+        Solicitacao s = buscaCodigo(codigo); 
+
+        if (s == null) {
+            return "Não existe solicitação com o código " + codigo + ".";
+        }
+        if (!s.getStatus().equals("EM_ATENDIMENTO")) {
+            return "A solicitação " + codigo + " está com status " + s.getStatus() + ". Só é possível concluir solicitações EM_ATENDIMENTO.";
+        }
+
+        s.setStatus("CONCLUIDA");
+        pilhaDeOperacoes.push(new Operacao("CONCLUSAO", s));
+
+        // TODO (integrante da Lista Dupla): inserir esta solicitação no histórico de atendimentos concluídos aqui
+        historicoAtendimentos.insertAscending(s);
+
+
+        return "Atendimento da solicitação " + codigo + " concluído com sucesso!";
+    }
+
+    // ==================== CASE 8 = Exibir histórico de operações ====================
     // monta o texto do histórico e devolve para o menu imprimir
     public String historico() throws Exception {
         Pilha<Operacao> pilhaAuxiliar = new Pilha<>();//pop perde o elemento quando tira
@@ -258,7 +281,7 @@ public class CentralDeAtendimento {//inicio da classe CentralDeAtendimento
         return caixinha_operacao;
     }
 
-    // ====================== CASE 8 = Desfazer última operação =======================
+    // ====================== CASE 9 = Desfazer última operação =======================
     // devolve a mensagem que o menu vai mostrar
     public String desfazer() throws Exception{
         String mensagem_tipo = "";
@@ -364,7 +387,91 @@ public class CentralDeAtendimento {//inicio da classe CentralDeAtendimento
         return mensagem_tipo;
     }
 
-    // ====================== CASE 9 = Inserir dados sintéticos =======================
+    // ==================== CASE 10 = Exibir todas as solicitações ====================
+    public String listar() throws Exception {
+        return listaDeSolicitacoes.toString();
+    }
+
+    // ================== CASE 11 = Pesquisar solicitação por código ==================
+    public Solicitacao buscaCodigo (int codigoDaBusca) throws Exception{
+        Node<Solicitacao> atual=listaDeSolicitacoes.getHead();
+        
+        while(atual!=null){
+            //pegar o Dado do nó atual, e o dado vai ser uma solicitação, e pega o codigo dessa solicitação
+            if (atual.getDado().getCodigo()==codigoDaBusca){
+                return atual.getDado();
+            }
+            atual=atual.getProx();
+        }
+        return null;
+
+    }
+
+    // ======================== CASE 12 = Remover solicitação =========================
+    // TODO  INSIRA O CASE 12 AQUI (REMOVER SOLICITAÇÃO)
+
+    // =================== CASE 13 = Exibir solicitações por status ===================
+    public String buscaStatus (String statusDaBusca) throws Exception{
+        String mensagemErro = "Não há uma solicitação com esse STATUS.";
+        String resultado = "";   // começa vazio
+        Node<Solicitacao> atual=listaDeSolicitacoes.getHead();
+        
+        while(atual!=null){
+            //pegar o Dado do nó atual, e o dado vai ser uma solicitação, e pega o codigo dessa solicitação
+            if (atual.getDado().getStatus().equalsIgnoreCase(statusDaBusca)){
+                // achou: guarda no texto (o + chama o toString() da Solicitacao)
+                resultado = resultado + atual.getDado() + "\n";
+            }
+            atual=atual.getProx();
+        }
+
+        if(resultado.isEmpty()){
+            return mensagemErro;
+        }
+        return resultado;
+    }
+
+    // ================= CASE 14 = Exibir solicitações por categoria ==================
+    public String buscaCategoria (String categoriaDaBusca) throws Exception{
+        String mensagemErro = "Não há uma solicitação com essa CATEGORIA.";
+        String resultado = "";   // começa vazio
+        Node<Solicitacao> atual=listaDeSolicitacoes.getHead();
+
+        while(atual!=null){
+            // pega o Dado do nó atual (uma solicitação) e olha a categoria dela
+            if (atual.getDado().getCategoria().equalsIgnoreCase(categoriaDaBusca)){
+                // achou: guarda no texto (o + chama o toString() da Solicitacao)
+                resultado = resultado + atual.getDado() + "\n";
+            }
+            atual=atual.getProx();
+        }
+
+        if(resultado.isEmpty()){
+            return mensagemErro;
+        }
+        return resultado;
+    }
+
+    //=============== CASE 15 = HISTORICO DE ATENDIMENTO ULTIMO AO PRIMEIRO =============
+    public void atendimentoPU() {
+        historicoAtendimentos.showAscending();    // case 15
+    }
+
+    //=============== CASE 16 = HISTORICO DE ATENDIMENTO ULTIMO AO PRIMEIRO =============
+    public void atendimentoUP() {
+        historicoAtendimentos.showDescending();   // case 16
+    }
+
+    // ======================== CASE 17 = Navegar pelo historico ========================
+    // TODO  INSIRA O CASE 17 AQUI (NAVEGAR PELO HISTORICO)
+
+    // ======================== CASE 18 = Pesquisar atendimento =========================
+    // TODO  INSIRA O CASE 18 AQUI (PESQUISAR ATENDIMENTO)
+
+    // ======================= CASE 19 = Exibir resumo do sistema ========================
+    // TODO  INSIRA O CASE 19 AQUI (EXIBIR RESUMO DO SISTEMA)
+
+    // ====================== CASE 20 = Inserir dados sintéticos =======================
     // devolve false se os dados já estão na fila (o menu avisa o usuário)
     public boolean inserirDadosSinteticos() throws Exception {
 
@@ -413,103 +520,5 @@ public class CentralDeAtendimento {//inicio da classe CentralDeAtendimento
 
         return true;
     }
-
-    // ==================== CASE 10 = Exibir todas as solicitações ====================
-    public String listar() throws Exception {
-        return listaDeSolicitacoes.toString();
-    }
-
-    // ================== CASE 11 = Pesquisar solicitação por código ==================
-    public Solicitacao buscaCodigo (int codigoDaBusca) throws Exception{
-        Node<Solicitacao> atual=listaDeSolicitacoes.getHead();
-        
-        while(atual!=null){
-            //pegar o Dado do nó atual, e o dado vai ser uma solicitação, e pega o codigo dessa solicitação
-            if (atual.getDado().getCodigo()==codigoDaBusca){
-                return atual.getDado();
-            }
-            atual=atual.getProx();
-        }
-        return null;
-
-    }
-
-    // =================== CASE 13 = Exibir solicitações por status ===================
-    public String buscaStatus (String statusDaBusca) throws Exception{
-        String mensagemErro = "Não há uma solicitação com esse STATUS.";
-        String resultado = "";   // começa vazio
-        Node<Solicitacao> atual=listaDeSolicitacoes.getHead();
-        
-        while(atual!=null){
-            //pegar o Dado do nó atual, e o dado vai ser uma solicitação, e pega o codigo dessa solicitação
-            if (atual.getDado().getStatus().equalsIgnoreCase(statusDaBusca)){
-                // achou: guarda no texto (o + chama o toString() da Solicitacao)
-                resultado = resultado + atual.getDado() + "\n";
-            }
-            atual=atual.getProx();
-        }
-
-        if(resultado.isEmpty()){
-            return mensagemErro;
-        }
-        return resultado;
-    }
-
-    // ================= CASE 14 = Exibir solicitações por categoria ==================
-    public String buscaCategoria (String categoriaDaBusca) throws Exception{
-        String mensagemErro = "Não há uma solicitação com essa CATEGORIA.";
-        String resultado = "";   // começa vazio
-        Node<Solicitacao> atual=listaDeSolicitacoes.getHead();
-
-        while(atual!=null){
-            // pega o Dado do nó atual (uma solicitação) e olha a categoria dela
-            if (atual.getDado().getCategoria().equalsIgnoreCase(categoriaDaBusca)){
-                // achou: guarda no texto (o + chama o toString() da Solicitacao)
-                resultado = resultado + atual.getDado() + "\n";
-            }
-            atual=atual.getProx();
-        }
-
-        if(resultado.isEmpty()){
-            return mensagemErro;
-        }
-        return resultado;
-    }
-
-    // ======================== CASE 15 = Concluir atendimento ========================
-    // conclui o atendimento, devolve a mensagem que o menu vai mostrar (igual ao desfazer)
-    // só conclui solicitação EM_ATENDIMENTO e registra a operação CONCLUSAO na pilha
-    public String concluirAtendimento(int codigo) throws Exception {
-        Solicitacao s = buscaCodigo(codigo); 
-
-        if (s == null) {
-            return "Não existe solicitação com o código " + codigo + ".";
-        }
-        if (!s.getStatus().equals("EM_ATENDIMENTO")) {
-            return "A solicitação " + codigo + " está com status " + s.getStatus() + ". Só é possível concluir solicitações EM_ATENDIMENTO.";
-        }
-
-        s.setStatus("CONCLUIDA");
-        pilhaDeOperacoes.push(new Operacao("CONCLUSAO", s));
-
-        // TODO (integrante da Lista Dupla): inserir esta solicitação no histórico de atendimentos concluídos aqui
-        historicoAtendimentos.insertAscending(s);
-
-
-        return "Atendimento da solicitação " + codigo + " concluído com sucesso!";
-    }
-
-
-    //========================== CASE 15 = HISTORICO DE ATENDIMENTO ULTIMO AO PRIMEIRO===================
-
-    public void atendimentoPU() {
-        historicoAtendimentos.showAscending();    // case 15
-    }
-
-    //========================== CASE 16 = HISTORICO DE ATENDIMENTO ULTIMO AO PRIMEIRO===================
-    public void atendimentoUP() {
-        historicoAtendimentos.showDescending();   // case 16
-    }
-
 
 }//fim CentralDeAtendimento
