@@ -60,6 +60,41 @@ public class Fila<T> implements TADFila<T> {
         return elemento;
     }
 
+    
+//Coloue isse removeMeio para remover a solicitação da fila, quando removemos solicitação com o case 13
+    public boolean removerMeio(T e) throws Exception {
+
+        Node<T> anterior = null;
+        Node<T> atual = inicio;
+
+        // procura o nó que guarda o elemento, lembrando de quem vem antes dele
+        while (atual != null && !atual.getDado().equals(e)) { //quando achar ele para o loop, e o atual sera aquele que devemos remover
+            anterior = atual;
+            atual = atual.getProx();
+        }
+        if (atual == null) {                   //se o atual for null signifia que sairam do loop justamente porque atual chegou a null e não achou
+            return false;                    // não achou
+        }
+
+
+        if (anterior == null) {                //se o anterior do atual(aquele que devemos remover) for null
+            dequeue();                       // era o primeiro da fila, e temos o dequeue
+            return true;   // era o primeiro da fila, então apenas amarramos 
+        
+        }
+
+
+
+        if (atual == fim) {
+            fim = anterior;                  //se o atual for o fim (fim é atributo dessa classe, então)
+        }
+
+        
+        qtde--;
+        return true;
+    }
+
+    
     // Retorna o primeiro elemento, sem remover.
     public T front() throws Exception {
         if (qIsEmpty()) {
