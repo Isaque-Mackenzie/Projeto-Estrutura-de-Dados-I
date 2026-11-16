@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import estrutura.LinkedList;
 import estrutura.TADFila;
 import estrutura.ListaDupla;
+import estrutura.NoDuplo;
 import estrutura.Fila;
 import estrutura.Pilha;
 import estrutura.Node;
@@ -12,27 +13,19 @@ import model.Solicitacao;
 
 public class CentralDeAtendimento {//inicio da classe CentralDeAtendimento
 
+    //TODO= VERIFIQUE OS ENCAPLUMENTO DE TODOS OS ATRIBUTOS
+
     //contador para controlar a quantidade de solicitações cadastradas, e numera a solicitação
     int contador=0;
 
-    //instanciação da Pilha
+    //INSTANCIAS
     private Pilha<Operacao> pilhaDeOperacoes = new Pilha<>();
-    //instanciação da Fila
     private Fila<Solicitacao> filaDeSolicitacoes = new Fila<>();
-     
-    //fila de solicitacoes PRIORIDADE 1 ALTA
-    private LinkedList<Solicitacao> listaDeSolicitacoes = new LinkedList<>(); 
-
-//
-    //lista duplamente encadeada: histórico dos atendimentos CONCLUÍDOS (ordenada pela hora da conclusão)
-    private ListaDupla<Solicitacao> historicoAtendimentos = new ListaDupla<>();  
-//
-    
-
-    //fila de solicitacoes PRIORIDADE 2 BAIXA
     private Fila<Solicitacao> filaDeSolicitacoesP2 = new Fila<>();
+    private LinkedList<Solicitacao> listaDeSolicitacoes = new LinkedList<>(); 
+    private ListaDupla<Solicitacao> historicoAtendimentos = new ListaDupla<>();  
 
-
+    
 
     // rodizio 3 de prioridade alta para 1 de prioridade baixa 3:1 (evita a prioridade 2 esperar para sempre)
     public static final int LIMITE_ALTA_CONSECUTIVA = 3;
@@ -40,7 +33,7 @@ public class CentralDeAtendimento {//inicio da classe CentralDeAtendimento
     // quantos atendimentos seguidos da prioridade 1 ja ocorreram enquanto havia prioridade 2 esperando
     private int altasConsecutivas = 0;
 
-    
+    //Para os dados sinteticos (9)
     Solicitacao joao = null;
     Solicitacao maria = null;
     Solicitacao pedro = null;
@@ -65,7 +58,7 @@ public class CentralDeAtendimento {//inicio da classe CentralDeAtendimento
         return (altasConsecutivas >= LIMITE_ALTA_CONSECUTIVA) ? filaDeSolicitacoesP2 : filaDeSolicitacoes;
     }
 
-    //no caso 4
+    //(4)
     //monta o texto da fila global (c as 2 prioridades), sem instanciar uma nova lista contendo as todas as solicitaçôes
     public String filaGlobal() throws Exception {
         TADFila<Solicitacao> aux1 = new Fila<>();
@@ -108,7 +101,7 @@ public class CentralDeAtendimento {//inicio da classe CentralDeAtendimento
         return "Fila de espera, na ordem de atendimento (rodízio " + LIMITE_ALTA_CONSECUTIVA + " de prioridade 1 : 1 de prioridade 2)\n" + texto;
     }
 
-    //no caso 5
+    //(5)
     //quantidade aguardando em cada prioridade
     public int tamanhoPrioridade(int prioridade) throws Exception {
         if (prioridade == 2) {
@@ -117,7 +110,7 @@ public class CentralDeAtendimento {//inicio da classe CentralDeAtendimento
         return filaDeSolicitacoes.size();
     }
 
-    // no caso 15 concluir atendimento
+    //(15)
     // existe alguma solicitação EM_ATENDIMENTO no cadastro geral?
     public boolean existeEmAtendimento() throws Exception {
         Node<Solicitacao> atual = listaDeSolicitacoes.getHead();
@@ -189,6 +182,7 @@ public class CentralDeAtendimento {//inicio da classe CentralDeAtendimento
         return novaSolicitacao;
     }
 
+
     // ==================== CASE 2 = Consultar próxima solicitação ====================
     // devolve a primeira solicitação da fila sem tirar 
     public Solicitacao primeiraDaFila() throws Exception  {
@@ -197,6 +191,7 @@ public class CentralDeAtendimento {//inicio da classe CentralDeAtendimento
         }
         return filaDeSolicitacoes.front();
     }
+
 
     // ===================== CASE 3 = Atender próxima solicitação =====================
     public Solicitacao atender(String responsavelAtendimento) throws Exception {
@@ -222,21 +217,28 @@ public class CentralDeAtendimento {//inicio da classe CentralDeAtendimento
         return seguraSolicitacao;
     }
 
+
     // ===================== CASE 4 = Exibir fila de solicitações =====================
     public TADFila<Solicitacao> getFila() throws Exception{
         return filaDeSolicitacoes;
     }
+
+
 
     // ================== CASE 5 = Exibir quantidade de solicitações ==================
     public int tamanhoFila() throws Exception{
         return filaDeSolicitacoes.size() + filaDeSolicitacoesP2.size(); // soma as 2 filas de prioridades
     }
 
+
+
     // ================= CASE 6 = Consultar última operação realizada =================
     //devolve o topo da pilha sem tirar
     public Operacao ultimaOperacao() throws Exception{
         return pilhaDeOperacoes.top();
     }
+
+
 
     // ======================== CASE 7 = Concluir atendimento ========================
     // conclui o atendimento, devolve a mensagem que o menu vai mostrar (igual ao desfazer)
@@ -254,12 +256,13 @@ public class CentralDeAtendimento {//inicio da classe CentralDeAtendimento
         s.setStatus("CONCLUIDA");
         pilhaDeOperacoes.push(new Operacao("CONCLUSAO", s));
 
-        // TODO (integrante da Lista Dupla): inserir esta solicitação no histórico de atendimentos concluídos aqui
         historicoAtendimentos.insertAscending(s);
 
 
         return "Atendimento da solicitação " + codigo + " concluído com sucesso!";
     }
+
+
 
     // ==================== CASE 8 = Exibir histórico de operações ====================
     // monta o texto do histórico e devolve para o menu imprimir
@@ -280,6 +283,8 @@ public class CentralDeAtendimento {//inicio da classe CentralDeAtendimento
         }
         return caixinha_operacao;
     }
+
+
 
     // ====================== CASE 9 = Desfazer última operação =======================
     // devolve a mensagem que o menu vai mostrar
@@ -333,10 +338,8 @@ public class CentralDeAtendimento {//inicio da classe CentralDeAtendimento
         // CONCLUSAO (opção 20) -> volta a solicitação para EM_ATENDIMENTO
         if (ultimaOperacao.getTipo().equals("CONCLUSAO")) {
             ultimaOperacao.getSolicitacao().setStatus("EM_ATENDIMENTO");
-            // TODO (integrante da Lista Dupla): remover esta solicitação do histórico de atendimentos concluídos aqui
-//
+            
             historicoAtendimentos.remove(ultimaOperacao.getSolicitacao());
-//
             return "Conclusão desfeita! A solicitação voltou para EM_ATENDIMENTO";
         }
 
@@ -387,10 +390,15 @@ public class CentralDeAtendimento {//inicio da classe CentralDeAtendimento
         return mensagem_tipo;
     }
 
+
+
     // ==================== CASE 10 = Exibir todas as solicitações ====================
     public String listar() throws Exception {
         return listaDeSolicitacoes.toString();
     }
+
+
+
 
     // ================== CASE 11 = Pesquisar solicitação por código ==================
     public Solicitacao buscaCodigo (int codigoDaBusca) throws Exception{
@@ -407,8 +415,51 @@ public class CentralDeAtendimento {//inicio da classe CentralDeAtendimento
 
     }
 
+
+
+
     // ======================== CASE 12 = Remover solicitação =========================
-    // TODO  INSIRA O CASE 12 AQUI (REMOVER SOLICITAÇÃO)
+    public  boolean  buscaRemove(int codigoDaBusca) throws Exception{
+        Solicitacao alvo = buscaCodigo(codigoDaBusca);
+        
+        if (alvo==null){
+            return false;
+        }
+        
+        listaDeSolicitacoes.remove(alvo);
+
+        
+        if (alvo.getStatus().equals("AGUARDANDO")) {        //se o status da solicitação for aguardando tiramos da fila
+            if (alvo.getPrioridade() == 2) {                //se a prioridade dessa solicitação for 2, então tira da fila 2
+                filaDeSolicitacoesP2.removerMeio(alvo);
+            } else {                                        //se a prioridade dessa solicitação for 1, então tira da fila 1                        
+                filaDeSolicitacoes.removerMeio(alvo);        
+            }
+        }
+
+        // pilha de operações tira as operações dessa solicitação, para não podermos desfazer operações feitas com uma solicitação removida
+        Pilha<Operacao> pilhaAux = new Pilha<>(); //pilha auxiliar
+        while (!pilhaDeOperacoes.isEmpty()) {    //se a pilha não tiver vazie
+            Operacao op = pilhaDeOperacoes.pop();  //damos pop na operação
+            if (op.getSolicitacao() != alvo) {  //se nãõ for o alvo
+                pilhaAux.push(op);   // guarda  novamente, se for ela não guarda
+            }
+        }
+        while (!pilhaAux.isEmpty()) {    //equanto a pilha aux não esvazia colocamos as operações da auxiliar novamente
+            pilhaDeOperacoes.push(pilhaAux.pop());   
+        }
+
+        //tira do historico de concluida o atendimento
+        historicoAtendimentos.remove(alvo);
+
+        
+        alvo.setStatus("CANCELADA");//muda status para cancelada
+
+        return true;
+    }
+
+    
+
 
     // =================== CASE 13 = Exibir solicitações por status ===================
     public String buscaStatus (String statusDaBusca) throws Exception{
@@ -431,6 +482,8 @@ public class CentralDeAtendimento {//inicio da classe CentralDeAtendimento
         return resultado;
     }
 
+
+
     // ================= CASE 14 = Exibir solicitações por categoria ==================
     public String buscaCategoria (String categoriaDaBusca) throws Exception{
         String mensagemErro = "Não há uma solicitação com essa CATEGORIA.";
@@ -452,24 +505,111 @@ public class CentralDeAtendimento {//inicio da classe CentralDeAtendimento
         return resultado;
     }
 
+
+
     //=============== CASE 15 = HISTORICO DE ATENDIMENTO ULTIMO AO PRIMEIRO =============
     public void atendimentoPU() {
         historicoAtendimentos.showAscending();    // case 15
     }
+
+
 
     //=============== CASE 16 = HISTORICO DE ATENDIMENTO ULTIMO AO PRIMEIRO =============
     public void atendimentoUP() {
         historicoAtendimentos.showDescending();   // case 16
     }
 
-    // ======================== CASE 17 = Navegar pelo historico ========================
-    // TODO  INSIRA O CASE 17 AQUI (NAVEGAR PELO HISTORICO)
 
-    // ======================== CASE 18 = Pesquisar atendimento =========================
-    // TODO  INSIRA O CASE 18 AQUI (PESQUISAR ATENDIMENTO)
+    // ======================== CASE 17 = Navegar pelo historico ========================
+    private NoDuplo<Solicitacao> atendimento = null;
+    public void inicio() {
+        atendimento=historicoAtendimentos.getHead();
+    }
+
+    
+    public String atendimento() {
+        return atendimento.getData().toString();  
+    }
+
+    public boolean Anterior() {
+        if (atendimento.getLeft() == null) {
+            return false;
+        }
+        atendimento = atendimento.getLeft();
+        return true;
+    }
+
+    public boolean Proximo() {
+        if (atendimento.getRight() == null) {
+            return false;
+        }
+        atendimento = atendimento.getRight();
+        return true;
+    }
+
+
+    
+    // ============ CASE 18 = Pesquisar atendimento ============
+    // procura pelo código da solicitação
+    public Solicitacao buscaAtendimento(int codigoDaBusca) {
+        NoDuplo<Solicitacao> atual = historicoAtendimentos.getHead();
+
+        while (atual != null) {
+            if (atual.getData().getCodigo() == codigoDaBusca) {
+                return atual.getData();
+            }
+            atual = atual.getRight();
+        }
+        return null;
+    }
+
+
 
     // ======================= CASE 19 = Exibir resumo do sistema ========================
-    // TODO  INSIRA O CASE 19 AQUI (EXIBIR RESUMO DO SISTEMA)
+   public int total() throws Exception {
+        return listaDeSolicitacoes.getSize();
+    }
+
+    public int aguardandoP1() throws Exception {
+        return filaDeSolicitacoes.size();
+    }
+
+    public int aguardandoP2() throws Exception {
+        return filaDeSolicitacoesP2.size();
+    }
+
+    public int emAtendimento() throws Exception {  //percrre até achar uma solicitação EM_ANDAMENTO
+        int contador= 0;
+        Node<Solicitacao> atual = listaDeSolicitacoes.getHead();
+        while (atual != null) {
+            if (atual.getDado().getStatus().equals("EM_ATENDIMENTO")) {
+                contador++;
+            }
+            atual = atual.getProx();
+        }
+        return contador;
+    }
+
+    public int concluidos() throws Exception {
+        return historicoAtendimentos.getSize();
+    }
+
+    public int canceladas() throws Exception {      //percrre até achar uma solicitação CANCELADA
+        int contadorCanceladas = 0;
+        Node<Solicitacao> atual = listaDeSolicitacoes.getHead();
+        while (atual != null) {
+            if (atual.getDado().getStatus().equals("CANCELADA")) {
+                contadorCanceladas++;
+            }
+            atual = atual.getProx();
+        }
+        return contadorCanceladas;
+    }
+
+    public int pilhaDeOperacoes() throws Exception {
+        return pilhaDeOperacoes.sizeElements();
+    }
+
 
     // ====================== CASE 20 = Inserir dados sintéticos =======================
     // devolve false se os dados já estão na fila (o menu avisa o usuário)
@@ -522,3 +662,4 @@ public class CentralDeAtendimento {//inicio da classe CentralDeAtendimento
     }
 
 }//fim CentralDeAtendimento
+
