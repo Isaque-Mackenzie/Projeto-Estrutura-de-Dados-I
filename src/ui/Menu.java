@@ -123,7 +123,7 @@ public class Menu{//inicio da classe Menu
                 centralAtendimento.cadastrar(nome, descricao, categoria, prioridade);
                 
 
-                //TIRA DAQUI DEPOIS, É SÓ DE TESTEEEEEEEEEE
+                //TODO: VERIFIQUE OS PONTOS QUE O PROFESSOR TIROU PONTO, ISSO AQUI ESTA TIRANDO PONTO
                 System.out.println("Primeiro da fila: " + centralAtendimento.primeiraDaFila().getSolicitante() + " | Codigo: " + centralAtendimento.primeiraDaFila().getCodigo());//teste
 
                 break;
@@ -290,17 +290,11 @@ public class Menu{//inicio da classe Menu
                 //leitura do codigoDa busca
                 codigoDaBusca = Integer.parseInt(scanner.nextLine().trim());
 
+                //TODO=NÃO ÉSQUECER DE COLOCAR ESSES TRATAMENTOS DE ERROS ABAIXO       
                 //se codiDa Busca <= 0 então da valor invalido
                 //se codigoDaBusca > que o size da lista, da valor invalido
                 //se digitar letra, da valor invalido
 
-                /* 
-                se validado, então vamos até a lista de solicitaçaõ, 
-                para isso vou usar a centralAtendimento, e la na central teremos uma
-                função para buscar pelo codigo, envia por parametro o codigo da busca.
-
-                achei é um bom nome? provavelmente não, rever isso
-                */
                 Solicitacao achei = centralAtendimento.buscaCodigo(codigoDaBusca);
 
                 //na volta se não achou, mensagem de erro
@@ -313,11 +307,32 @@ public class Menu{//inicio da classe Menu
                 break;
 
             } 
+
+
+
             case 12:{ // REMOVER SOLICITAÇÃO
                 System.out.println("Opção 12 selecionada: Remover solicitação");
-                // TODO  fazer a opção 12 Remover solicitação
+                if(centralAtendimento.listaSimplesVazia()){
+                    System.out.println("\nNão há nada na Lista!\n");
+                    break;
+                }
+
+                
+                System.out.println("Digite o codigo da solicitação para remoção: ");
+                scanner.nextLine();
+                int codigoDaBusca;
+
+                //leitura do codigoDa busca
+                codigoDaBusca = Integer.parseInt(scanner.nextLine().trim());
+
+                centralAtendimento.buscaRemove(codigoDaBusca);
+
+
                 break;
             }
+
+
+
 
             case 13:{ // EXIBIR SOLICITAÇÕES POR STATUS
                 System.out.println("Opção 13 selecionada: Exibir solicitações por status");
@@ -327,7 +342,7 @@ public class Menu{//inicio da classe Menu
                 }
 
                 else{
-                    System.out.println("Digite o codigo da solicitação: ");
+                    System.out.println("Digite o Status da solicitação [AGUARDANDO/EM_ANDAMENTO/CONCLUIDA/CANCELADA]: ");
                     scanner.nextLine();
                     String statusDaBusca;
 
@@ -405,22 +420,105 @@ public class Menu{//inicio da classe Menu
                 break;
 
             }
-            case 17:{ // NAVEGAR PELO HISTÓRICO
-                System.out.println("Opção 17 selecionada: Navegar pelo histórico");
-                // TODO FAZER OPÇÂO 17 Navegar pelo histórico
-                break;
-            }
-            case 18:{ // PESQUISAR ATENDIMENTO
-                System.out.println("Opção 18 selecionada: Pesquisar atendimento");
-                // TODO FAZER OPÇÂO 18 Pesquisar atendimento
-                break;
 
+
+
+            case 17:{ // NAVEGAR PELO HISTÓRICO
+                
+                System.out.println("Opção 17 selecionada: Navegar pelo histórico");
+
+                if (centralAtendimento.listaDuplaVazia()) {
+                    System.out.println("\nNenhum atendimento concluído ainda!\n");
+                    break;
+                }
+
+                scanner.nextLine(); // limpa o buffer do teclado
+
+                centralAtendimento.inicio(); // começa no primeiro atendimento
+
+                String opcaoN= "";
+                while (!opcaoN.equalsIgnoreCase("S")) {   //enquanto a pessoa não digitar S (de sair) ela navegará pelo historico
+                    System.out.println("\nAtendimento: ");
+                    System.out.println(centralAtendimento.atendimento());   //toString na central, vai imprimir o atendimento
+                    System.out.println("\n[A] Anterior | [P] Próximo | [S] Sair");
+                    System.out.print("Opcao: ");
+
+                    opcaoN = scanner.nextLine().trim();
+
+                    if (opcaoN.equalsIgnoreCase("A")) {
+                        if (!centralAtendimento.Anterior()) {
+                            System.out.println("\nEsse é primeito atendimento.");
+                        }
+                    }
+                    else if (opcaoN.equalsIgnoreCase("P")) {
+                        if (!centralAtendimento.Proximo()) {
+                            System.out.println("\nEsse é o ultimo.");
+                        }
+                    }
+                    else if (!opcaoN.equalsIgnoreCase("S")) {
+                        System.out.println("\nOpção inválida.");
+                    }
+                }
+                break;
             }
+            
+
+
+
+
+             case 18:{ // PESQUISAR ATENDIMENTO (pelo código da solicitação)
+                System.out.println("Opção 18 selecionada: Pesquisar atendimento");
+
+                if (centralAtendimento.listaDuplaVazia()) {
+                    System.out.println("\nNenhum atendimento concluído ainda!\n");
+                    break;
+                }
+
+                scanner.nextLine(); // limpa o buffer do teclado
+
+                System.out.print("Digite o código da solicitação: ");
+                int codigoAtendimento;
+                try {
+                    codigoAtendimento = Integer.parseInt(scanner.nextLine().trim());
+                } catch (NumberFormatException e) {
+                    System.out.println("ERRO! DIGITE APENAS NUMEROS");
+                    break;
+                }
+
+                Solicitacao atendimentoAchado = centralAtendimento.buscaAtendimento(codigoAtendimento);
+
+                if (atendimentoAchado == null) {
+                    System.out.println("\nNão há atendimento concluído com o código " + codigoAtendimento + "\n");
+                } else {
+                    System.out.println("\nAtendimento encontrado:");
+                    System.out.println(atendimentoAchado);
+                }
+                break;
+            }
+
+
+
             case 19:{ // EXIBIR RESUMO DO SISTEMA
                 System.out.println("Opção 19 selecionada: Exibir resumo do sistema");
-                // TODO FAZER OPÇÂO 19 Exibir resumo do sistema
+                System.out.println(
+                    "\n=================================================\n" +
+                    "               RESUMO DO SISTEMA                 \n" +
+                    "=================================================\n" +
+                    "Total de solicitações cadastradas: " + centralAtendimento.total() + "\n" +
+                    " - Aguardando Prioridade 1 (Alta): " + centralAtendimento.aguardandoP1() + "\n" +
+                    " - Aguardando Prioridade 2 (Baixa): " + centralAtendimento.aguardandoP2() + "\n" +
+                    " - Em Atendimento: " + centralAtendimento.emAtendimento() + "\n" +
+                    " - Concluídas (no Histórico): " + centralAtendimento.concluidos() + "\n" +
+                    " - Canceladas / Removidas: " + centralAtendimento.canceladas() + "\n" +
+                    "Quantidade de operações na Pilha: " + centralAtendimento.pilhaDeOperacoes() + "\n" +
+                    "=================================================\n"
+                );
+                
+    
+
                 break;
             }
+
 
             case 20:{ // DADOS SINTÉTICOS
 
@@ -436,6 +534,7 @@ public class Menu{//inicio da classe Menu
 
                 break;
             }
+
             case 0:{
                 System.out.println("Encerrando o programa...");
                 return true; // Sai do método exibir, encerrando o programa
@@ -447,3 +546,4 @@ public class Menu{//inicio da classe Menu
         return false; // Continua o loop no método main
     }//fim exibir
 }//fim menu
+
