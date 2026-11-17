@@ -75,11 +75,6 @@ public class Menu{//inicio da classe Menu
             case 1:{ // CADASTRAR NOVA SOLICITAÇÃO
                 System.out.println("Opção 1 selecionada: Cadastrar nova solicitação");
 
-                // CASO A FILA ESTIVER CHEIA, ENTÃO NEM PERGUNTA AS INFO PARA CADASTRAR, SO AVISA Q TA CHEIA E VOLTA PARA O MENU
-                if (centralAtendimento.filaCheia()) {
-                    System.out.println("\nA fila está cheia! Não é possível cadastrar novas solicitações.\n");
-                    break;
-                }
 
                 // Limpa o buffer do teclado
                 scanner.nextLine();  //igual o de c, não muda nada
@@ -167,8 +162,11 @@ public class Menu{//inicio da classe Menu
                 if(centralAtendimento.filaVazia()){
                     System.out.println("A fila está vazia!");
                 }
+                
                 else{
-                      System.out.println(centralAtendimento.filaGlobal());
+
+                    System.out.println("\n--- ORDEM GLOBAL DE ATENDIMENTO ---");
+                    System.out.println(centralAtendimento.filaGlobal());
                 }
                 break;
             }
@@ -176,6 +174,7 @@ public class Menu{//inicio da classe Menu
             case 5:{ // QUANTIDADE DE SOLICITAÇÕES AGUARDANDO
                 System.out.println("Opção 5 selecionada: Quantidade de solicitações aguardando");
                 System.out.printf("Quantidade de solicitações: %d\n", centralAtendimento.tamanhoFila());
+
 
                 System.out.printf("  Prioridade 1 (Alta): %d\n", centralAtendimento.tamanhoPrioridade(1));
                 System.out.printf("  Prioridade 2 (Baixa): %d\n", centralAtendimento.tamanhoPrioridade(2));                
@@ -296,6 +295,11 @@ public class Menu{//inicio da classe Menu
                 //se digitar letra, da valor invalido
 
                 Solicitacao achei = centralAtendimento.buscaCodigo(codigoDaBusca);
+                
+                if(achei==null){
+                    System.out.println("Não encontrado");                    
+                    break;
+                } 
 
                 //na volta se não achou, mensagem de erro
                 //se achou, um print
@@ -325,9 +329,12 @@ public class Menu{//inicio da classe Menu
                 //leitura do codigoDa busca
                 codigoDaBusca = Integer.parseInt(scanner.nextLine().trim());
 
-                centralAtendimento.buscaRemove(codigoDaBusca);
 
-
+                if (centralAtendimento.buscaRemove(codigoDaBusca)) {
+                    System.out.println("\nSolicitação removida com sucesso!\n");
+                } else {
+                    System.out.println("\nSolicitação não encontrada ou não pode ser removida.\n");
+                }
                 break;
             }
 
@@ -342,7 +349,7 @@ public class Menu{//inicio da classe Menu
                 }
 
                 else{
-                    System.out.println("Digite o Status da solicitação [AGUARDANDO/EM_ANDAMENTO/CONCLUIDA/CANCELADA]: ");
+                    System.out.println("Digite o Status da solicitação [AGUARDANDO/EM_ATENDIMENTO/CONCLUIDA/CANCELADA]: ");
                     scanner.nextLine();
                     String statusDaBusca;
 
