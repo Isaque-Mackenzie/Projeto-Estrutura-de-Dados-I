@@ -104,10 +104,13 @@ public class CentralDeAtendimento {//inicio da classe CentralDeAtendimento
     //(5)
     //quantidade aguardando em cada prioridade
     public int tamanhoPrioridade(int prioridade) throws Exception {
-        if (prioridade == 2) {
-            return filaDeSolicitacoesP2.size();
+        if (prioridade==1){
+            return filaDeSolicitacoes.size();
         }
-        return filaDeSolicitacoes.size();
+
+        
+        return filaDeSolicitacoesP2.size();
+        
     }
 
     //(15)
@@ -126,9 +129,6 @@ public class CentralDeAtendimento {//inicio da classe CentralDeAtendimento
 
 
 // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- MÉTODOS AUXILIARES =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-    public boolean filaCheia() { 
-        return filaDeSolicitacoes.qIsFull() || filaDeSolicitacoesP2.qIsFull();
-    }
 
     public boolean filaVazia() throws Exception{
         return filaDeSolicitacoes.qIsEmpty() && filaDeSolicitacoesP2.qIsEmpty();
@@ -219,9 +219,7 @@ public class CentralDeAtendimento {//inicio da classe CentralDeAtendimento
 
 
     // ===================== CASE 4 = Exibir fila de solicitações =====================
-    public TADFila<Solicitacao> getFila() throws Exception{
-        return filaDeSolicitacoes;
-    }
+    
 
 
 
@@ -415,45 +413,50 @@ public class CentralDeAtendimento {//inicio da classe CentralDeAtendimento
 
     }
 
+    
+    private boolean removerDaFila(Fila<Solicitacao> fila, Solicitacao alvo) throws Exception {
+    Fila<Solicitacao> aux = new Fila<>();
+    boolean achou = false;
+
+    while (!fila.qIsEmpty()) {
+        Solicitacao atual = fila.dequeue();
+        if (!achou && atual == alvo) {
+            achou = true;              // achou: não vai para a auxiliar
+        } else {
+            aux.enqueue(atual);
+        }
+    }
+    while (!aux.qIsEmpty()) {
+        fila.enqueue(aux.dequeue());
+    }
+    return achou;
+    }
 
 
-
-    // ======================== CASE 12 = Remover solicitação =========================
+    
     public  boolean  buscaRemove(int codigoDaBusca) throws Exception{
         Solicitacao alvo = buscaCodigo(codigoDaBusca);
         
-        if (alvo==null){
+        if (alvo==null || alvo.getStatus().equals("CANCELADA")){//se tiver cancelada não precisa remover
             return false;
         }
         
-        listaDeSolicitacoes.remove(alvo);
 
         
-        if (alvo.getStatus().equals("AGUARDANDO")) {        //se o status da solicitação for aguardando tiramos da fila
-            if (alvo.getPrioridade() == 2) {                //se a prioridade dessa solicitação for 2, então tira da fila 2
-                filaDeSolicitacoesP2.removerMeio(alvo);
-            } else {                                        //se a prioridade dessa solicitação for 1, então tira da fila 1                        
-                filaDeSolicitacoes.removerMeio(alvo);        
-            }
+        if (alvo.getPrioridade() == 2) {
+            removerDaFila(filaDeSolicitacoesP2, alvo);
+        } else {
+            removerDaFila(filaDeSolicitacoes, alvo);
         }
 
-        // pilha de operações tira as operações dessa solicitação, para não podermos desfazer operações feitas com uma solicitação removida
-        Pilha<Operacao> pilhaAux = new Pilha<>(); //pilha auxiliar
-        while (!pilhaDeOperacoes.isEmpty()) {    //se a pilha não tiver vazie
-            Operacao op = pilhaDeOperacoes.pop();  //damos pop na operação
-            if (op.getSolicitacao() != alvo) {  //se nãõ for o alvo
-                pilhaAux.push(op);   // guarda  novamente, se for ela não guarda
-            }
-        }
-        while (!pilhaAux.isEmpty()) {    //equanto a pilha aux não esvazia colocamos as operações da auxiliar novamente
-            pilhaDeOperacoes.push(pilhaAux.pop());   
-        }
+
+        
+
+        
+        alvo.setStatus("CANCELADA");//muda status para cancelada, não precisa tirar da lista, só deixar cancelada
 
         //tira do historico de concluida o atendimento
         historicoAtendimentos.remove(alvo);
-
-        
-        alvo.setStatus("CANCELADA");//muda status para cancelada
 
         return true;
     }
